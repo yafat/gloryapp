@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <title>Glory Makeup</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        
+        <!-- Glyphicon Animate Css-->
+        <link rel="stylesheet" href="css/glyphicon-animate.css">
+        <link rel="stylesheet" href="css/index.css" >
+        <link rel="stylesheet" href="assets/swiper/css/swiper.min.css" >
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="js/js.cookie.js"></script>
+        <script src="assets/swiper/js/swiper.jquery.min.js"></script>
+        <script src="js/script.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script defer src="js/jcanvas.min.js"></script>
+    </head> 
+    <body style="background:#000;">
+        <div class="pag pag-init">
+            <div class="pag-init-bg">
+                <div class="logo">
+                    <img src="img/background-Top-Logo.png" />
+                </div>
+            </div>
+        </div>
+        <div class="pag pag-login">
+            <div class="photo-container">
+                <form role="form" id="login-form" >
+                <h2>登入會員</h2>
+                <div class="form-group  form-inline">
+                    <label for="loginid">帳號</label>
+                    <input type="text" class="form-control" name="loginid" id="loginid" value="" placeholder="請輸入帳號" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="passwd">密碼</label>
+                    <input type="password" class="form-control" name="passwd" id="passwd" value="" placeholder="請輸入密碼" />
+                </div>
+                <div class="form-group form-inline">
+                    <button class="btn btn-primary" type="button" onclick="login();">登入</button>
+                    <button class="btn btn-warning" type="button" onclick="show_page('.pag-register')">註冊會員</button>
+                    <a class="forget-passwd">忘記密碼</a>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="pag pag-register">
+            <div class="photo-container">
+                <form role="form" id="login-form" >
+                <h2>註冊會員</h2>
+                <div class="form-group  form-inline">
+                    <label for="reg_loginid">帳號</label>
+                    <input type="text" class="form-control" name="loginid" id="reg_loginid" value="" placeholder="請輸入帳號" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="reg_passwd">密碼</label>
+                    <input type="password" class="form-control" name="passwd" id="reg_passwd" value="" placeholder="請輸入密碼" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="reg_name">姓名</label>
+                    <input type="text" class="form-control" name="name" id="reg_name" value="" placeholder="請輸入姓名" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="reg_email">email</label>
+                    <input type="text" class="form-control" name="email" id="reg_email" value="" placeholder="請輸入Email" />
+                </div>
+                <div class="form-group form-inline">
+                    <button class="btn btn-primary" type="button" onclick="register();">送出</button>
+                    <button class="btn btn-default" type="button" onclick="show_page('.pag-login');">返回登入</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="pag pag-setup">
+            <div class="photo-container">
+                <form role="form" id="login-form" >
+                <h2>設定</h2>
+                <div class="setup-group">
+                    <h4>藍芽設定</h4>
+                    <ul class="bt-list">
+                        <li><label for="BT1">GLORY-MAKEUP</label></li>
+                        <li><label for="BT2">AQ-40</label></li>
+                        <li><label for="BT3">Sumsung STV</label></li>
+                        <li><label for="BT4">SONY-TR21</label></li>
+                    </ul>
+                </div>
+                <!--
+                <div class="setup-group">
+                    <h4>帳號設定</h4>
+                    <div class="form-group  form-inline">
+                        <label for="reg_loginid">帳號</label>
+                        <input type="text" class="form-control" name="loginid" id="set_loginid" value="" placeholder="請輸入帳號" />
+                    </div>
+                    <div class="form-group  form-inline">
+                        <label for="reg_passwd">密碼</label>
+                        <input type="password" class="form-control" name="passwd" id="set_passwd" value="" placeholder="請輸入密碼" />
+                    </div>
+                    <div class="form-group  form-inline">
+                        <label for="reg_name">姓名</label>
+                        <input type="text" class="form-control" name="name" id="set_name" value="" placeholder="請輸入姓名" />
+                    </div>
+                    <div class="form-group  form-inline">
+                        <label for="reg_email">email</label>
+                        <input type="text" class="form-control" name="email" id="set_email" value="" placeholder="請輸入Email" />
+                    </div>
+                </div>
+                -->
+                <div class="form-group form-inline">
+                    <button class="btn btn-primary" type="button" onclick="setup();">送出</button>
+                </div>
+                </form>
+            </div>
+            <div class="pag-funcs-content">
+                <a class="pag-funcs pull-left list-btn" onclick="show_list();" href="#" ></a>
+                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                 
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-index">
+            <div class="pag-header">
+                <div class="logo">
+                    <img src="img/background-Top-Logo.png" />
+                </div>
+            </div>
+            <div class="pag-content">
+                <img src="img/Videobutten.png" />
+            </div>
+            <div class="pag-content">
+                <img src="img/Content_Preferences_butten.png" />
+            </div>
+            <div class="pag-footer bckcvr">
+                <a id="start-btn" class="sbt" onclick="show_page('.pag-camera');" disabled="disabled">開始操作</a>
+            </div>
+            <div class="pag-funcs-content">
+                <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-camera">
+            <div class="photo-container">
+                <div class="msg">
+                    <div class="text-center" style="font-size: 40px;"><i class="fa fa-camera"></i></div>
+                    <span id="how-to-take-picture">請按照接下來的語音說明步驟進行拍照程序，謝謝您。</span>
+                    <div id="pag-camera-msg" class="text-center" style="font-size: 45px;"></div>
+                </div>
+            </div>
+            <div class="pag-footer bckcvr">
+                <a id="camera-btn1" onclick="start_get_pic();" class="sbt">立即拍攝</a>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-picture">
+            <div class="photo-container">
+                <div class="sho-points-container">
+                    <div class="sho-points"></div>
+                </div>
+                <canvas id="photo-canvas" width="320" height="360"></canvas>
+                <img id="face-img" src="" class="hidden" />
+            </div>
+            <div class="picture-actions">
+                <div class="swiper-container choose-makeup"><!--都會知性,氣質甜美,時尚名媛-->
+                    <!-- Additional required wrapper -->
+                    <div class="swiper-wrapper">
+                        <!-- Slides -->
+                        <div class="swiper-slide" cstyle="0">
+                            <h3>左右滑動選擇化妝樣式</h3>
+                        </div>
+                        <div class="swiper-slide makeup-style" cstyle="1">
+                            <h3>都會知性</h3>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a role="tab" aria-controls="eye1" data-toggle="tab">眼影</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="brush1" data-toggle="tab">腮紅</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="fund1" data-toggle="tab">粉底</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane eye1 active">
+                                    <ul class="style-colors" step="eye">
+                                        <li cnum="1" class="p162"></li>
+                                        <li cnum="2" class="p163"></li>
+                                        <li cnum="3" class="p655"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane brush1">
+                                    <ul class="style-colors" step="brush">
+                                        <li cnum="4" class="p176"></li>
+                                        <li cnum="5" class="p1685"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fund1">
+                                    <ul class="style-colors" step="fundation">
+                                        <li cnum="6" class="fundation1"></li>
+                                        <li cnum="7" class="fundation2"></li>
+                                        <li cnum="8" class="fundation3"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center style-simulate-btns">
+                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
+                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
+                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
+                            </div>
+                        </div>
+                        <div class="swiper-slide makeup-style" cstyle="2">
+                            <h3>氣質甜美</h3>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a role="tab" aria-controls="eye2" data-toggle="tab">眼影</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="brush2" data-toggle="tab">腮紅</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="fund2" data-toggle="tab">粉底</a></li> 
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane eye2 active">
+                                    <ul class="style-colors" step="eye">
+                                        <li cnum="1" class="p182"></li>
+                                        <li cnum="2" class="p244"></li>
+                                        <li cnum="3" class="p7525"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane brush2">
+                                    <ul class="style-colors" step="brush">
+                                        <li cnum="4" class="p494"></li>
+                                        <li cnum="5" class="p170"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fund2">
+                                    <ul class="style-colors" step="fundation">
+                                        <li cnum="6" class="fundation1"></li>
+                                        <li cnum="7" class="fundation2"></li>
+                                        <li cnum="8" class="fundation3"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center style-simulate-btns">
+                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
+                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
+                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
+                            </div>
+                        </div>
+                        <div class="swiper-slide makeup-style" cstyle="3">
+                            <h3>時尚名媛</h3>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active"><a role="tab" aria-controls="eye3" data-toggle="tab">眼影</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="brush3" data-toggle="tab">腮紅</a></li>
+                                <li role="presentation"><a role="tab" aria-controls="fund3" data-toggle="tab">粉底</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane eye3 active">
+                                    <ul class="style-colors" step="eye">
+                                        <li cnum="1" class="p538"></li>
+                                        <li cnum="2" class="p535"></li>
+                                        <li cnum="3" class="p424"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane brush3">
+                                    <ul class="style-colors" step="brush">
+                                        <li cnum="4" class="p1767"></li>
+                                        <li cnum="5" class="p177"></li>
+                                    </ul>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fund3">
+                                    <ul class="style-colors" step="fundation">
+                                        <li cnum="6" class="fundation1"></li>
+                                        <li cnum="7" class="fundation2"></li>
+                                        <li cnum="8" class="fundation3"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="text-center style-simulate-btns">
+                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
+                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
+                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
+                            </div>
+                        </div>
+                    </div>                    
+                    <!-- If we need navigation buttons -->
+                    <div class="swiper-button-prev swiper-button-white"></div>
+                    <div class="swiper-button-next swiper-button-white"></div>
+                </div>
+                <div class="color-plate">
+                    <div class="color-choose-btn fundation fundation1"></div>
+                    <div class="color-choose-btn fundation fundation2"></div>
+                    <div class="color-choose-btn fundation fundation3"></div>
+                    <div class="color-choose-btn brush "></div>
+                    <div class="color-choose-btn brush "></div>
+                </div>
+                <div id="style-share" class="style-option">
+                    <div class="text-center" >
+                    <a onclick="share_social('1');"><img src="img/fb-button.png" /></a>
+                    <a onclick="share_social('2');"><img src="img/line-button.png" /></a>
+                    <a onclick="share_social('3');"><img src="img/wechat-button.png" /></a>
+                    </div>
+                    <div class="text-center" style="margin-top:15px;" >
+                        <a class="sbt" onclick="share_return()">返回</a>
+                    </div>
+                </div>
+                <div id="style-save" class="style-option">
+                    <h3>儲存設計</h3>
+                    <form name="style-save-form" id="style-save-form">
+                    <div class="form-group form-inline" >
+                        <input type="text" class="form-control" id="style_name" name="style_name" placeholder="請輸入您自定的樣式名稱" />
+                    </div>
+                    <div class="text-center" style="margin-top:15px;" >
+                        <a class="sbt inline" onclick="do_save_style()">儲存</a>
+                        <a class="sbt inline" onclick="save_return()">取消</a>
+                    </div>
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-chk-inks">
+            <div class="photo-container">
+                <div class="inks-message">請稍候，系統正在比對色匣號碼...</div>
+                <div class="inks">
+
+                </div>
+            </div>
+                <!--
+                <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
+                <div class="row inks" style="padding-top:70px;">
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#f4dbaa;"></div>
+                        <div class="ink-txt text-center">粉底 #155</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#fadfaf;">
+                            <div class="err-color" style="background:#ffd691;">#1345</div>
+                        </div>
+                        <div class="ink-txt text-center">打亮 #155H</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#f2c68c;"></div>
+                        <div class="ink-txt text-center">修容 #156</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#f9bfc1;"></div>
+                        <div class="ink-txt text-center">眼影a #182</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#e29ed6;"></div>
+                        <div class="ink-txt text-center">眼影b #251</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#753802;"></div>
+                        <div class="ink-txt text-center">眼影c #725</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#f9afd3;"></div>
+                        <div class="ink-txt text-center">腮紅a #236</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                        <div class="ink-color" style="background:#f9baaa;"></div>
+                        <div class="ink-txt text-center">腮紅b #169</div>
+                    </div>
+                    <div class="col-xs-4 text-center">
+                    </div>
+                </div>-->
+            
+            <div class="pag-footer bckcvr">
+                <a class="sbt inline" onclick="show_page('.pag-picture')">返回</a>
+                <a class="sbt inline" onclick="correct_ink()" id="btn-start-makeup" >重新整理</a>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-makeup">
+            <div class="pag-content" style="height:75%">
+                <div class="steps-msg" style="padding: 250px 0 0 0; text-align: center; color: #fff;">正在連結化妝機，請稍候。。。</div>
+            </div>
+            <div class="pag-footer bckcvr">
+                <div class="text-center">
+                <a class="emerg-btn" onclick="startProc('stop_make_up');"></a>
+                <a id="back-index" class="sbt" onclick="show_page('.pag-index')" style="display:none">返回</a>
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-msg">
+            <div class="pag-content">
+                <h2 id="pag-msg-title"></h2>
+                <div id="pag-msg-content"></div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                <a href="#" id="back-index" class="sbt" onclick="show_page('')" >返回畫面</a>
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div id="alert-modal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title" id="alert-title"></h4>
+                  </div>
+                  <div class="modal-body">
+                    <div id="alert-content"></div>
+                  </div>
+                  <div class="modal-footer">
+                        <a class="btn btn-primary" id="btn-close-alert"  data-dismiss="modal" >確定</a>
+                  </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="config-modal" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                    <h4 class="modal-title" id="config-title">Wifi連線設定</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="form-group form-inline">
+                        <label for="host">Host</label>
+                        <input class="form-control" type="text" name="host" id="host" />
+                    </div>
+                    <div class="form-group form-inline">
+                        <label for="port">Port</label>
+                        <input class="form-control" type="text" name="port" id="port" />
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                        <a class="btn btn-primary" id="btn-close-alert"  data-dismiss="modal" >確定</a>
+                  </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div id="slidemenu">
+            <ul class="nav navbar-nav">
+                <li><a onclick="show_page('.pag-setup')">藍芽設定</a></li>
+                <li><a onclick="show_page('.pag-config')">個人資料</a></li>
+                <li><a onclick="show_page('.pag-index')">回首頁</a></li>
+                <li><a onclick="show_page('.pag-camera');">拍照</a></li>
+                <li><a onclick="show_page('.pag-picture');">選擇樣式</a></li>
+                <li><a onclick="show_page('.pag-about')">關於Glory Makeup</a></li>
+                <li><a onclick="show_page('.pag-contact')">客服聯絡</a></li>
+                <li><a id="togglePoints">Show</a></li>
+                <li><a id="debug">Debug</a></li>
+                <li><a onclick="msgpage_show('發生錯誤','與化妝主機之連線發生問題，正在嘗試重新連線中。如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。');">中斷連線</a></li>
+                <li><a id="logout">Log out</a></li>
+            </ul>
+        </div>
+        <div class="inverse" id="navbar-height-col"></div>
+        <div class="hidden">
+            <img id="photo-origin" />
+            <img id="photo-whiten" />
+        </div>
+        <audio id="audio" src="voice/001.m4a" type="audio/mp4"></audio>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>
