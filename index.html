@@ -17,7 +17,6 @@
         
         <!-- Glyphicon Animate Css-->
         <link rel="stylesheet" href="css/glyphicon-animate.css">
-        <link rel="stylesheet" href="css/index.css" >
         <link rel="stylesheet" href="assets/swiper/css/swiper.min.css" >
         <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -29,12 +28,498 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script defer src="js/jcanvas.min.js"></script>
+        
+        <style type="text/css">
+        #msg-code{
+            position:absolute;
+            bottom:0;
+            width:100%;
+            height:20px;
+            color:#fff;
+            display:none;
+        }
+        body{
+            width:100%;
+            height:100%; 
+            color:#fff;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
+        }
+        .init-slider{
+            width:100%;
+            height:100%;
+        }
+        .forget-passwd{
+            display: block;
+            text-align: right;
+            margin-right: 20%;
+            margin-top: 20px;
+        }
+        #login-form{
+            padding: 20px;
+        }
+        .form-group.form-inline label{
+            display:inline-block !important;
+            width:20% !important;
+        }
+        .form-group.form-inline input{
+            display:inline-block !important;
+            width:70% !important;
+        }
+        .socket-data, .sho-pic, .steps, .steps-back{
+            display:none;
+        }
+        .steps{
+            padding-top:25%;
+        }
+        .sho-points-container{
+            width:100%;
+            height:360px;
+            position: absolute;
+        }
+        .sho-points{
+            width:320px;
+            height:360px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            display:none;
+        }
+        .lmp{
+            position:absolute;
+            width:2px;
+            height:2px;
+            background:#666;
+        }
+        .lmp.bigp{
+            width:3px;
+            height:3px;
+            background:#f00;
+        }
+        .pag-camera{ /*.pag-index*/
+            display:none;
+        }
+        .pag{
+            width:100%;
+            height:100%;
+            position:absolute;
+            background:#000;
+            display: none;
+        }
+        .pag.pag-init{
+            display:block;
+        }
+        .bckcvr{
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .pag-header{
+            background: url(img/background-Top.png) repeat-y center center;
+            padding: 40px 5px 5px 5px;
+        }
+        .pag-footer{
+            width: 100%;
+            position: fixed;
+            text-align: center;
+            bottom: 0;
+            padding: 10px 0;
+            background: #000;
+        }
+        .pag-index .pag-footer{
+            background: url(img/background-down.png) no-repeat center top;
+            padding-top: 30px;
+            min-height: 150px;
+        }
+        .pag-content{
+            position:relative;
+        }
+        .logo{
+            width:25%;
+            margin:5px auto;
+        }
+        .logo img, .pag-content img{
+            width:100%;
+        }
+        .gear-bt{
+            position: absolute;
+            top:25px;
+            left:25px;
+            color:#fff;
+            font-size: 1.5em;
+        }
+        .sbt{
+            display:block;
+            width:70%;
+            margin:10px auto;
+            border:#fff solid 1px;
+            text-align: center;
+            padding:10px 0;
+            color:#fff;
+            cursor:pointer;
+        }
+        .sbt.inline{
+            display: inline-block;
+            width: auto;
+            padding: 5px 10px;
+            margin: 15px 6px;
+        }
+        a.sbt:link, a.sbt:visited, a.sbt:hover, a.sbt:focus, a.sbt:active{
+            color:#fff;
+            text-decoration: none;
+        }
+        .modal-content{
+            background: #000;
+            color:#fff;
+        }
+        .modal-content .close{
+            color:#fff;
+        }
+        .photo-container{
+            padding:45px 0 0 0;
+            text-align: center;
+            position: relative;
+        }
+        .photo-deco{
+            max-width:80%;
+            margin:auto;
+        }
+        .photo-deco img{
+            max-width:100%;
+        }
+        .pag-funcs-content{
+            position:absolute;
+            top:0;
+            width:100%;
+            padding: 10px;
+        }
+        .pag-funcs{
+            display:block;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            color: #ccc;
+            padding-top: 2px;
+            border: #ccc solid 1px;
+            border-radius: 15px;
+        }
+        .list-btn{
+            background: url(img/function-button.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .del-btn{
+            background: url(img/Delete-button.png) no-repeat;
+            background-size: 100% 100%;
+        }
+        .photo-msg{
+            position:absolute;
+            width:60%;
+            top:45%;
+            left:20%;
+            height:60px;
+            margin-top:-30px;
+        }
+        .photo-msg-loader{
+            font-size: 2em;
+        }
+        .style-choice-txt{
+            padding:25px 0;
+            color: #fff;
+        }
+        #style-share{
+            display: block;
+            position: absolute;
+            top: 100%;
+            background: #000;
+            width: 100%;
+            z-index: 9;
+            height: 200px;
+            padding-top: 25px;
+        }
+        #style-save{
+            display: block;
+            position: absolute;
+            top: 100%;
+            background: #000;
+            width: 100%;
+            z-index: 9;
+            height: 250px;
+            padding-top: 0px;
+        }
+        #style-save h3{
+            padding-bottom: 25px;
+        }
+        .style-option a{
+            display:inline-block;
+            margin:0 10px;
+        }
+        .style-footer{
+            position:absolute; top:200px; left:0; width:100%;
+        }
+        .inks{
+            width:96%;
+            margin:auto;
+            color:#fff;
+            padding-bottom:20px;
+        }
+        .ink-color{
+            width:80px;
+            height:80px;
+            border-radius:40px;
+            position: relative;
+        }
+        .ink-color .err-color{
+            width:60px;
+            height:60px;
+            border-radius:30px;
+            position:absolute;
+            left:10px;
+            top:10px;
+            padding-top:20px;
+            color:#000;
+            text-align:center;
+            box-shadow: 0 0 8px black;
+        }
+        #slidemenu {
+            background: #333;
+            left: -100%;
+            width: 210px;
+            min-width: 0;
+            position: absolute;
+            padding-left: 0;
+            z-index: 2;
+            top: 0px;
+            margin: 0;
+        }
+        #slidemenu a{
+            color:#fff;
+        }
+        #slidemenu .navbar-nav {
+            min-width: 0;
+            width: 100%;
+            margin: 0;
+        }
+        #slidemenu .navbar-nav .dropdown-menu li a {
+            min-width: 0;
+            width: 80%;
+            white-space: normal;
+        }
+        .slidemenu-li-title{
+            background: #666;
+            padding: 10px 15px;
+            font-size: 1.1em;
+        }
+        #slide-nav {
+            border-top: 0
+        }
+        #navbar-height-col {
+            position: fixed;
+            top: 0;
+            height: 100%;
+            bottom:0;
+            width: 210px;
+            left: -210px;
+            background: #333;
+        }
+        .pag-init-bg{
+            width:100%;
+            height:100%;
+            background:#FF33CC;
+        }
+        .pag-init-bg .swiper-slide{
+            width:100%;
+            height:100%;
+            text-align: center;
+            background-repeat:no-repeat;
+            background-size:cover;
+        }
+        .pag-init-bg .logo{
+            position: absolute;
+            left:50%;
+            top:50%;
+            transform:translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%); /* IE 9 */
+            -webkit-transform: translate(-50%, -50%); /* Safari */
+        }
+        .bt-list{
+            padding: 0 0 0 30px;
+            margin: 0;
+            list-style: none;
+            text-align: left;
+        }
+        .bt-list li{
+            padding:5px;
+        }
+        .bt-list li label{
+            padding-left: 10px;
+            font-size: 18px;
+            color:#fff;
+        }
+        .msg{
+            padding:25% 0;
+            margin:0 auto;
+            width:80%;
+        }
+        .choose-makeup{
+            background: #000;
+            width: 100%;
+        }
+        .choose-makeup .nav-tabs{
+            text-align: center;
+            width: 280px;
+            margin: 0 auto;
+        }
+        .choose-makeup .nav-tabs>li {
+            display: inline-block;
+            float:none;
+        }
+        .style-colors{
+            list-style: none;
+            padding:0;
+            margin: 10px 0 0 0;
+            text-align: center;
+        }
+        .style-colors li{
+            display:inline-block;
+            margin: 0 10px 0 0;
+            padding: 30px;
+            border-radius: 30px;
+            border:#fff solid 1px;
+        }
+        .picture-actions{
+            width: 100%;
+            position: fixed;
+            text-align: center;
+            bottom:0;
+            padding: 0px 0;
+            background: #000;
+        }
+        @media screen and (max-height: 510px) {
+            .picture-actions{
+                bottom:-56px;
+            }
+        }
+
+        .choose-makeup .swiper-button-prev, .choose-makeup .swiper-button-next{
+            margin-top:-108px;
+        }
+        .fundation1{ background-color: #f5c9a2; }
+        .fundation2{ background-color: #dba976; }
+        .fundation3{ background-color: #c4905e; }
+        .p176{ background-color: rgb(249, 175, 173); }
+        .p1685{ background-color: rgb(132, 53, 17); }
+        .p162{ background-color: rgb(249, 198, 170); }
+        .p163{ background-color: rgb(252, 158, 112); }
+        .p655{ background-color: rgb(12, 28, 71); }
+        .p494{ background-color: rgb(242, 173, 178);}
+        .p170{ background-color: rgb(249, 137, 114);}
+        .p182{ background-color: rgb(249, 191, 193);}
+        .p244{ background-color: rgb(237, 160, 211);}
+        .p7525{ background-color: rgb(117, 56, 2);}
+        .p1767{ background-color: rgb(249, 178, 183); }
+        .p177{ background-color: rgb(249, 130, 127);}
+        .p538{ background-color: rgb(214, 211, 214);}
+        .p535{ background-color: rgb(155, 163, 183);}
+        .p424{ background-color: rgb(130, 127, 119);}
+        .color-plate{
+            position: fixed;
+            width: 270px;
+            background: #000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%); /* IE 9 */
+            -webkit-transform: translate(-50%, -50%); /* Safari */
+            border-radius: 10px;
+            padding:20px;
+            display: none;
+            z-index: 9;
+        }
+        .color-choose-btn{
+            display: inline-block;
+            margin: 0 10px 0 0;
+            width: 62px;
+            height:62px;
+            border-radius: 30px;
+            border:#fff solid 1px;
+            position: relative;
+        }
+        .inks-message{
+            padding:50px 0;
+        }
+        .inks{
+            padding:20px;
+        }
+        .ink-chk{
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin: -15px 0 0 -15px;
+            width: 30px;
+            height:30px;
+            font-size:30px;
+        }
+        .emerg-btn{
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            border: #fff solid 4px;
+            background-color: #900;
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .modal-dialog{
+            top: 150px;
+            position: fixed;
+            width: 80%;
+            margin: 0 10%;
+        }
+        #pag-msg-title{
+            margin-top: 180px;
+            text-align: center;
+        }
+        #pag-msg-content{
+            width:80%;
+            margin:0 auto;
+            padding: 25px 0 0 0;
+            text-align: center;
+            color: #fff;
+        }
+        .pag-title{
+            margin-top: 180px;
+            text-align: center;
+        }
+        .pag-text{
+            width:80%;
+            margin:0 auto;
+            padding: 25px 0 0 0;
+            text-align: center;
+            color: #fff;
+            text-align: left;
+        }
+        .qa-title{
+            text-align: center;
+        }
+        .qa-q{
+            font-weight: bold;
+        }
+        </style>
     </head> 
     <body style="background:#000;">
         <div class="pag pag-init">
             <div class="pag-init-bg">
-                <div class="logo">
-                    <img src="img/background-Top-Logo.png" />
+                <div class="swiper-container init-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" style="background-image:url('img/makeup index_A.jpg');"></div>
+                        <div class="swiper-slide" style="background-image:url('img/makeup index_B.jpg')"></div>
+                        <div class="swiper-slide" style="background-image:url('img/makeup index_C.jpg')"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,8 +536,8 @@
                     <input type="password" class="form-control" name="passwd" id="passwd" value="" placeholder="請輸入密碼" />
                 </div>
                 <div class="form-group form-inline">
-                    <button class="btn btn-primary" type="button" onclick="login();">登入</button>
-                    <button class="btn btn-warning" type="button" onclick="show_page('.pag-register')">註冊會員</button>
+                    <button class="btn btn-default" type="button" onclick="login();">登入</button>
+                    <button class="btn btn-default" type="button" onclick="show_page('.pag-register')">註冊會員</button>
                     <a class="forget-passwd">忘記密碼</a>
                 </div>
                 </form>
@@ -79,10 +564,43 @@
                     <input type="text" class="form-control" name="email" id="reg_email" value="" placeholder="請輸入Email" />
                 </div>
                 <div class="form-group form-inline">
-                    <button class="btn btn-primary" type="button" onclick="register();">送出</button>
+                    <button class="btn btn-default" type="button" onclick="register();">送出</button>
                     <button class="btn btn-default" type="button" onclick="show_page('.pag-login');">返回登入</button>
                 </div>
                 </form>
+            </div>
+        </div>
+        <div class="pag pag-config">
+            <div class="photo-container">
+                <form role="form" id="login-form" >
+                <h2>會員資料</h2>
+                <div class="form-group  form-inline">
+                    <label for="cfg_loginid">帳號</label>
+                    <input type="text" class="form-control" name="loginid" id="cfg_loginid" value="" placeholder="請輸入帳號" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="cfg_passwd">密碼</label>
+                    <input type="password" class="form-control" name="passwd" id="cfg_passwd" value="" placeholder="請輸入密碼" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="cfg_name">姓名</label>
+                    <input type="text" class="form-control" name="name" id="cfg_name" value="" placeholder="請輸入姓名" />
+                </div>
+                <div class="form-group  form-inline">
+                    <label for="cfg_email">email</label>
+                    <input type="text" class="form-control" name="email" id="cfg_email" value="" placeholder="請輸入Email" />
+                </div>
+                <div class="form-group form-inline">
+                    <button class="btn btn-primary" type="button" onclick="edit_member();">送出</button>
+                    <button class="btn btn-default" type="button" onclick="logout()">登出</button>
+                </div>
+                </form>
+            </div>
+            <div class="pag-funcs-content">
+                <a class="pag-funcs pull-left list-btn" onclick="show_list();" href="#" ></a>
+                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+                 
+                <div class="clearfix"></div>
             </div>
         </div>
         <div class="pag pag-setup">
@@ -92,10 +610,7 @@
                 <div class="setup-group">
                     <h4>藍芽設定</h4>
                     <ul class="bt-list">
-                        <li><label for="BT1">GLORY-MAKEUP</label></li>
-                        <li><label for="BT2">AQ-40</label></li>
-                        <li><label for="BT3">Sumsung STV</label></li>
-                        <li><label for="BT4">SONY-TR21</label></li>
+                        
                     </ul>
                 </div>
                 <!--
@@ -410,6 +925,126 @@
             <div class="clearfix"></div>
             </div>
         </div>
+        <div class="pag pag-socket-error">
+            <div class="pag-content">
+                <h2 class="pag-title">主機連線發生錯誤</h2>
+                <div class="pag-text">
+                    與化妝主機之連線發生問題，正在嘗試重新連線中。請您確定化妝機電源開啟，並顯示燈號為正常。<br />
+                    如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。
+                </div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                    <a class="btn btn-default"  data-toggle="modal" data-target="#config-modal">設定連線</a>
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-about">
+            <div class="pag-content">
+                <h2 class="pag-title">關於榮美化妝機</h2>
+                <div class="pag-text">
+                    榮美化妝機致力於提供您最優質的化妝體驗。請使用我們原廠的化妝材料才能保證您使用我們的化妝機可以達到最佳的化妝效果。
+                </div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                    
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-contact">
+            <div class="pag-content">
+                <h2 class="pag-title">聯絡客服</h2>
+                <div class="pag-text">
+                    若您需要採購或維護您的化妝機，請聯絡我們的客服專線：<br />
+                    (02)2922-3899
+                </div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                    
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="pag pag-manual">
+            <div class="pag-content">
+                <h2 class="qa-title">使用說明</h2>
+                <div class="qa">
+                    <div class="qa-q">
+                    如何連結化妝機？
+                    </div>
+                    <div class="qa-a">
+                    <ol>
+                        <li>請先確定化妝機開機，並且開啟您的手機的藍芽連線。</li>
+                        <li>請開啟<a onclick="show_page('.pag-setup')">藍芽設定</a>的畫面，等待系統尋找周邊的藍芽裝置，待出現「glorymakeupBT」的裝置時，
+                        請點選並連結。</li>
+                        <li>完成連結後，請跳到「主機連結設定」的畫面，設定主機要連結的Wifi熱點名稱及密碼，</li>
+                        <li>設定完成後，請按下測試連結，待系統畫面完成連線測試，會自動跳到操作首頁，您就可以正常操作化妝機</li>
+                    </ol>
+                    </div>
+                </div>
+                <div class="qa">
+                    <div class="qa-q">
+                    如何更換化妝色匣？
+                    </div>
+                    <div class="qa-a">
+                    <ol>
+                        <li>請先確定化妝機開機，及與本App程式連線中。</li>
+                        <li>請開啟<a onclick="show_page('.pag-setup')">更換色匣</a>的畫面，並在畫面中選取您要更換的色匣編號。完成後，系統會通知化妝機將該色匣旋轉到待更換位置。</li>
+                        <li>請打開化妝機色匣更換窗口，若有舊色匣請抽出舊色匣，然後請將新色匣依照安裝手冊說明，安裝到空的色匣裝置中。</li>
+                        <li>安裝完成後，若您安裝下一個色匣，請直接在App中點選下一個色匣，或是直接關上換色匣窗口。換色匣窗口關上後，系統會自動重新取得目前的色匣色號，您可以在畫面中檢視到新的色匣對應色號。</li>
+                    </ol>
+                    </div>
+                </div>
+                <div class="qa">
+                    <div class="qa-q">
+                    化妝中斷後，如何重新進行？
+                    </div>
+                    <div class="qa-a">
+                    <ol>
+                        <li>您的化妝程序必需要在「準備」、「換色」、「清潔」等程序中才可以從中斷程序中恢復。若您的化妝程序是在「噴塗上色」時中斷，就無法直接恢復。</li>
+                        <li>請您直接在畫面中按下「繼續上妝」，等待系統語音提示您就位，系統會自動恢復上妝。</li>
+                        <li>若您的化妝程序無法中斷恢復，您手機的畫面會說明該程序無法再繼續恢復。請您清潔您的臉部後，再重新選擇妝容，重新化妝。</li>
+                    </ol>
+                    </div>
+                </div>
+                <div class="qa">
+                    <div class="qa-q">
+                    需要其他化妝色匣號碼，如何購買？
+                    </div>
+                    <div class="qa-a">
+                    <ol>
+                        <li>請上我們的官方網站購買。</li>
+                    </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                    
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
         <div class="pag pag-msg">
             <div class="pag-content">
                 <h2 id="pag-msg-title"></h2>
@@ -464,24 +1099,27 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                        <a class="btn btn-primary" id="btn-close-alert"  data-dismiss="modal" >確定</a>
+                        <a class="btn btn-default" onclick="reconnect();">重試</a>
                   </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
         <div id="slidemenu">
             <ul class="nav navbar-nav">
+                <li><div class="slidemenu-li-title">設定</div></li>
                 <li><a onclick="show_page('.pag-setup')">藍芽設定</a></li>
                 <li><a onclick="show_page('.pag-config')">個人資料</a></li>
-                <li><a onclick="show_page('.pag-index')">回首頁</a></li>
+                <li><div class="slidemenu-li-title">功能切換</div></li>
+                <li><a onclick="show_page('.pag-index')">首頁</a></li>
                 <li><a onclick="show_page('.pag-camera');">拍照</a></li>
                 <li><a onclick="show_page('.pag-picture');">選擇樣式</a></li>
-                <li><a onclick="show_page('.pag-about')">關於Glory Makeup</a></li>
+                <li><div class="slidemenu-li-title">說明文件</div></li>
+                <li><a onclick="show_page('.pag-manual')">使用說明</a></li>
+                <li><a onclick="show_page('.pag-about')">關於榮美</a></li>
                 <li><a onclick="show_page('.pag-contact')">客服聯絡</a></li>
-                <li><a id="togglePoints">Show</a></li>
+                <!--<li><a id="togglePoints">Show</a></li>
                 <li><a id="debug">Debug</a></li>
-                <li><a onclick="msgpage_show('發生錯誤','與化妝主機之連線發生問題，正在嘗試重新連線中。如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。');">中斷連線</a></li>
-                <li><a id="logout">Log out</a></li>
+                <li><a onclick="msgpage_show('發生錯誤','與化妝主機之連線發生問題，正在嘗試重新連線中。如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。');">中斷連線</a></li>-->
             </ul>
         </div>
         <div class="inverse" id="navbar-height-col"></div>
@@ -490,7 +1128,760 @@
             <img id="photo-whiten" />
         </div>
         <audio id="audio" src="voice/001.m4a" type="audio/mp4"></audio>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        <!--<script type="text/javascript" src="cordova.js"></script>-->
+        <script type="text/javascript">
+            var mdb = {"glory":{loginid:'glory', passwd:'glory'}};
+            var minfo = {loginid:'glory', passwd:'glory'};
+            //var host = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+            var host = "glory.cloud-us.com";
+            var data = "-- data to be sent --";
+            var port = 3000;
+            var key = "";
+            var proc = "";
+            var stat = "";
+            var pic_load="N";
+            var pic_file="face.bmp";
+            var cur_page="";
+            var cur_show_page = "";
+            var makeup_style=1;
+            var socket;
+            var mask_w = 230;
+            var mask_h = 320;
+            var screen_w = 320;
+            var center_x = 160;
+            var center_y = 180;
+            var screen_w = 360;
+            var locations = {};
+            var socket_connected = false;
+            var socket_retry = 0;
+            var skip_connected = false;
+            var mySwiper;
+            var def_face = "face_smooth.png";
+            var msg1="系統正在讀取您前次的拍攝記錄，請稍候。";
+            var msg2="請將您的頭臉按照說明書指示，就正確的位置後，系統會自動進行拍照";
+            var msg3="系統無法讀取您前次拍攝記錄，請重新拍攝。";
+            var swiper_html = "";
+            var action_bottom = 0;
+            var glory_url = "http://glory.cloud-us.com";
+            var ts;
+            $(function(){
+                $('#host').val(host);
+                $('#port').val(port);
+                screen_w = $(window).width();
+                center_x = parseInt(screen_w/2);
+                show_page('.pag-init');
+            });
+            function show_page(target_page){
+                if(!target_page) target_page = cur_page;
+                if(target_page != '.pag-msg') cur_page = target_page;
+                toggle_slide_menu(true);
+                $('.pag').hide();
+                $('.modal').modal('hide'); 
+                $(target_page).show();
+                cur_show_page = target_page;
+                init_page(target_page);
+            }
+            
+            function init_page(target_page){
+                if(target_page == '.pag-init'){
+                    var to_page = '.pag-login';
+                    if(Cookies.get('mdb')){
+                        mdb = Cookies.get('mdb');
+                    }
+                    if(Cookies.get('minfo')){
+                        minfo = Cookies.get('minfo');
+                        to_page = '.pag-index';
+                    }else if(minfo){
+                        //to_page = '.pag-index';
+                    }
+                    try{
+                        socket = io.connect('http://'+ host + ':' + port ,{'connect timeout': 3000} );
+                        socket.on('connect', function() {
+                            socket_connected = true;
+                            socket.on('cmd', function (data) {
+                                console.log('rec from socket io : '+data);
+                                handelProc(data);
+                            });
+                            socket.on('msg', function (data) {
+                                console.log('msg from socket io : '+data);
+                                msgpage_show('發生錯誤', data);
+                            });
+                            socket.on('disconnect', function(){
+                                socket_connected = false;
+                                proc_socket_error();
+                            });
+                        });
+                        socket.on('connect_failed', function() {
+                            socket_connected = false;
+                            proc_socket_error();
+                        });
+                        socket.on('error', function() {
+                            socket_connected = false;
+                            proc_socket_error();
+                        });
+                        socket.io.on('connect_error', function(err) {
+                            socket_connected = false;
+                            proc_socket_error();
+                        });
+                        var iSwiper = new Swiper ('.init-slider', {
+                          loop: false
+                        });
+                        $('.init-slider .swiper-slide').click(function(){
+                            show_page(to_page);
+                        });
+                        //setTimeout(function(){ show_page(to_page) }, 500);
+                    }catch(e){
+                        msgbox_show('連線錯誤', '系統發生未預期的錯誤，請嘗試更新您的設定。', function(){
+                            show_page('.pag-setup');
+                        });
+                        console.log(e);
+                        return false;
+                    }
+                }else if(target_page == '.pag-login' || target_page == '.pag-index'){
+                    $('#camera-btn1').show();
+                    if(!socket_connected && !skip_connected){
+                        msgbox_show('連線錯誤', '系統無法正確連線到您的化妝機，請確認您的藍芽連線狀態。', [{text:'略過', click:function(){ skip_connected = true; show_page('.pag-index'); }
+                        }]);
+                        return false;
+                    }
+                }else if(target_page == '.pag-setup'){
+                    $('#set_name').val(minfo.name);
+                    $('#set_email').val(minfo.email);
+                    $('#set_loginid').val(minfo.loginid);
+                    $('#set_passwd').val(minfo.passwd);
+                }else if(target_page == '.pag-config'){
+                    $('#cfg_name').val(minfo.name);
+                    $('#cfg_email').val(minfo.email);
+                    $('#cfg_loginid').val(minfo.loginid);
+                    $('#cfg_passwd').val(minfo.passwd);    
+                }else if(target_page == '.pag-camera'){
+                    startProc('prepare_face');
+                }else if(target_page == '.pag-picture'){
+                    def_face = 'http://' + host +':' + port+'/'+pic_file+'?r='+get_random_str();
+                    center_x = 160;
+                    center_y = 180;
+                    $('#face-img').load(function() {
+                        face_loaded();
+                    }).attr('src', def_face);
+                    if(!mySwiper){
+                        mySwiper = new Swiper ('.choose-makeup', {
+                          loop: true,
+                          onSlideChangeEnd: changeMakeup
+                        });
+                    }
+                }else if(target_page == '.pag-chk-inks'){
+                    if(ts) clearTimeout(ts);
+                    $('.inks').html('');
+                    $('.pag-picture .swiper-slide-active .tab-content li').each(function(){
+                        var cnum = $(this).attr('cnum');
+                        var pclass = $(this).attr('class');
+                        var color_btn = '<div class="color-choose-btn '+pclass+' cnum'+cnum+'" ></div>';
+                        $('.inks').append(color_btn);
+                    });
+                    var s = 0;
+                    ts = setTimeout(check_ink(0), 1000);
+                    /*
+                    if($('.err-color:visible').length > 0){ //color-choose-btn
+                        msgbox_show('色匣不符合','您所設置的色匣不符合本妝感的色匣配置，請您參考畫面上的提示更換正確的色匣後，按「重新整理」再試一次。');
+                    }*/
+                }else if(target_page == '.pag-makeup'){
+                    startProc('select_style');
+                }
+            }
+            function proc_socket_error(){
+                if(socket_retry > 10){
+                    socket.close();
+                    return;
+                }
+                socket_retry++;
+                if(cur_show_page != '.pag-socket-error') show_page('.pag-socket-error');
+            }
+            function reconnect(){
+                socket.close();
+                socket_retry=0;
+                host = $('#host').val();
+                port = $('#port').val();
+                msgbox_show('連線成功', '應用程式已成功連接化妝機，您現在可以操作化妝功能！');
+                socket = io.connect('http://'+ host + ':' + port ,{'connect timeout': 3000} );
+                socket.on('connect', function() {
+                    socket_connected = true;
+                    if(cur_show_page == '.pag-socket-error') show_page('.pag-index');
+                    socket.on('cmd', function (data) {
+                        console.log('rec from socket io : '+data);
+                        handelProc(data);
+                    });
+                    socket.on('msg', function (data) {
+                        console.log('msg from socket io : '+data);
+                        msgpage_show('發生錯誤', data);
+                    });
+                    socket.on('disconnect', function(){
+                        socket_connected = false;
+                        proc_socket_error();
+                    });
+                });
+            }
+            function face_loaded(){
+                if(!locations["p1"]) get_landmark_locations();
+                $('#photo-canvas').clearCanvas().drawImage({
+                  source: def_face,
+                  x: center_x, y: center_y,
+                  scale: 1
+                });
+            }
+            function draw_face(snum){
+                //var cur_host = 'http://' + host + '/images/simulate/';
+                makeup_style = snum;
+                var cur_host = 'img/';
+                brush_left = cur_host+ 'brush_left'+snum+'.png?r='+get_random_str();
+                brush_right = cur_host+ 'brush_right'+snum+'.png?r='+get_random_str();
+                eye_left = cur_host+ 'eye_left'+snum+'.png?r='+get_random_str();
+                eye_right = cur_host+ 'eye_right'+snum+'.png?r='+get_random_str();
+                //var loc = get_draw_locs();
+                var brush_loc = cal_brush_loc();
+                var eye_loc = cal_eye_loc();
+                //console.log(brush_loc);
+                //console.log(eye_loc);
+                $('#photo-canvas').clearCanvas().drawImage({
+                      source: def_face,
+                      x: center_x, y: center_y,
+                      scale: 1
+                }).drawImage({
+                    source: brush_left,
+                    x: brush_loc.blx, y: brush_loc.bly,
+                    scale: brush_loc.blr,
+                    rotate: brush_loc.bln,
+                    opacity: 0.6,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'brushleft'
+                }).drawImage({
+                    source: brush_right,
+                    x: brush_loc.brx, y: brush_loc.bry,
+                    scale: brush_loc.brr,
+                    rotate: brush_loc.brn,
+                    opacity: 0.6,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'brushright'
+                }).drawImage({
+                    source: eye_left,
+                    x: eye_loc.elx, y: eye_loc.ely,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeleft'
+                }).drawImage({
+                    source: eye_right,
+                    x: eye_loc.erx, y: eye_loc.ery,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeright'
+                });
+            }
+            function share_return(){
+                $('#style-share').animate({'top':'100%'}, function(){ $('#style-share').hide(); });
+            }
+            function save_return(){
+                $('#style-save').animate({'top':'100%'}, function(){ $('#style-save').hide(); });
+            }
+            function share_style(){
+                 $('#style-share').show().animate({'top':'56px'});
+            }
+            function save_style(){
+                 $('#style-save').show().animate({'top':'0'});
+            }
+            function do_save_style(){
+                var new_style_name = $('#style_name').val();
+                var new_slide = mySwiper.slides[mySwiper.activeIndex];
+                var obj_slide = $(new_slide).clone().attr('id', new_style_name);
+                obj_slide.find('h3').html(new_style_name);
+                var obj_slide_html = obj_slide[0].outerHTML;
+                mySwiper.appendSlide(obj_slide_html);
+                mySwiper.update();
+                save_return();
+            }
+            function correct_ink(){
+                if($('.err-color').length > 0){
+                    $('.err-color').remove(); 
+                    $('#btn-start-makeup').html('開始化妝'); 
+                }else{
+                    show_page('.pag-makeup');
+                }
+            }
+            function share_social(){
+
+            }
+            function handle_no_pic(){
+                if(pic_load == "N"){
+                    pic_load = "X";
+                    $('#photo-msg-text').html(msg3);
+                    $('#camera-btn1').html('拍攝照片').show();
+                    $('#camera-btn2').hide();
+                    $('.photo-msg-loader').css('opacity',0);
+                }
+            }
+
+            function send(str) {
+                socket.emit('cmd', str);
+            }
+            function startProc(cmd){
+                $('#msg-code').html(cmd);
+                if(cmd == 'prepare_face'){
+                    document.getElementById('audio').setAttribute("src", "voice/001.m4a");
+                    document.getElementById('audio').play();
+                    document.getElementById('audio').addEventListener("ended", start_prepare_pic);
+                }else if(cmd == 'prepare_pic'){
+                    $('#msg-code').html('enter prepare_pic');
+                    document.getElementById('audio').setAttribute("src", "voice/002.m4a");
+                    document.getElementById('audio').play();
+                    document.getElementById('audio').addEventListener("ended", start_get_pic);
+                    $('#msg-code').html('finish prepare_pic');
+                }else if(cmd == 'makeup_complete'){
+                    document.getElementById('audio').setAttribute("src", "voice/006.m4a");
+                    document.getElementById('audio').play();
+                    document.getElementById('audio').addEventListener("ended", end_makeup_complete);
+                    $('#emerg-btn').hide();
+                    $('#back-index').show();
+                }else if(cmd == 'finish_process'){
+                    $('#steps-msg').html('化妝程序完成。');
+                }
+                if(socket_connected){
+                    if(cmd == 'get_pic'){
+                        document.getElementById('audio').play();
+                        proc = "wait for pic";
+                        send("get_pic");
+                    }else if(cmd == 'select_style'){
+                        proc = "wait for makeup";
+                        send("select_type=" + makeup_style);
+                    }else if(cmd == 'stop_make_up'){
+                        proc = "stop makeup";
+                        send("stop_makeup");
+                        $('#steps-msg').html('緊急停止。');
+                        $('#emerg-btn').hide();
+                        $('#back-index').show();
+                    }
+                }else{
+                    if(cmd == 'get_pic'){
+                        document.getElementById('audio').setAttribute("src", "voice/003.m4a");
+                        document.getElementById('audio').play();
+                        document.getElementById('audio').addEventListener("ended", end_get_pic);
+                    }else if(cmd == 'select_style'){
+                        document.getElementById('audio').setAttribute("src", "voice/005.m4a");
+                        document.getElementById('audio').play();
+                        document.getElementById('audio').addEventListener("ended", end_make_up);
+                    }else if(cmd == 'stop_make_up'){
+                        $('#steps-msg').html('緊急停止。');
+                        $('#emerg-btn').hide();
+                        $('#back-index').show();
+                    }
+                }
+            }
+            function start_prepare_pic(){
+                document.getElementById('audio').setAttribute("src", "");
+                document.getElementById('audio').removeEventListener("ended", start_prepare_pic);
+                countdown(3, '#pag-camera-msg', "prepare_pic" );
+            }
+            function start_get_pic(){
+                $('#camera-btn1').hide();
+                document.getElementById('audio').setAttribute("src", "");
+                document.getElementById('audio').removeEventListener("ended", start_prepare_pic);
+                document.getElementById('audio').removeEventListener("ended", start_get_pic);
+                countdown(3, '#pag-camera-msg', "get_pic" );
+            }
+            function end_get_pic(){
+                document.getElementById('audio').removeEventListener("ended", end_get_pic);
+                handelProc('get_pic_ok');
+            }
+            function end_make_up(){
+                document.getElementById('audio').removeEventListener("ended", end_make_up);
+                countdown(3, '#steps-msg', "makeup_complete" );
+            }
+            function end_makeup_complete(){
+                document.getElementById('audio').removeEventListener("ended", end_makeup_complete);
+                countdown(3, '#steps-msg', "finish_process" );
+            }
+            function countdown(s, ele, func){
+                var f = function(){
+                    $(ele).text(s);
+                    s--;
+                    if(s > 0){
+                        setTimeout(f, 1000);
+                    }else{
+                        $(ele).text('');
+                        startProc(func);
+                    }
+                };
+                f();
+            }
+            
+            function handelProc(rcv){
+                if(rcv == 'get_pic_ok'){
+                    //讀取圖片
+                    var pic_origin = 'http://' + host + ':'+ port + '/face.bmp?r='+get_random_str();
+                    var pic_whiten = 'http://' + host + ':'+ port + '/face_whiten.jpg?r='+get_random_str();
+                    $('#pic_origin').attr('src', pic_origin);
+                    $('#pic_whiten').attr('src', pic_whiten);
+                    show_page('.pag-picture');
+                    get_landmark_locations();
+                    document.getElementById('audio').setAttribute("src", "voice/004.m4a");
+                    document.getElementById('audio').play();
+                    return;
+                }else if(rcv == 'step1'){
+                    //切換到步驟1
+                    $('.sho-pic').hide();
+                    $('.steps').show();
+                    $('.steps-msg').html('步驟 1 &gt;&gt;&gt;');
+                }else if(rcv == 'step2'){
+                    $('.steps').show();
+                    $('.steps-msg').html('步驟 2 &gt;&gt;&gt;');
+                }else if(rcv == 'step3'){
+                    $('.steps').show();
+                    $('.steps-msg').html('步驟 3 &gt;&gt;&gt;');
+                }else if(rcv == 'makeup_complete'){
+                    $('.steps').show();
+                    $('.steps-msg').html('步驟完成');
+                    $('.steps-back').show();
+                }
+            }
+            function backToStart(){
+                $('.socket-data').show();
+                $('.sho-pic, .steps').hide();
+            }
+            function get_random_str(){
+                var s = Math.floor((Math.random() * 10000) + 1);
+                return s.toString();
+            }
+            function get_landmark_locations(){
+                var s = '';
+                var fpath = 'http://' + host + ':'+ port + '/2d_landmarks.txt?r='+get_random_str();
+                $.support.cors = true;
+                $.get(fpath, function(res){
+                    try{
+                        var lines = res.split("\n");
+                        var numLines = lines.length;
+                        var i;
+                        var n = 0;
+                        // parse phrases
+                        for (i = 2; i < numLines; i++) {
+                          var line = lines[i];
+                          if (line.length <= 0) {
+                            continue;
+                          } else {
+                            //拆解這行變成X,Y兩個值
+                            var points = line.split(" ");
+                            var px = parseInt(points[0]);
+                            var py = parseInt(points[1]);
+                            var point =  {'x':px, 'y':py};
+                            console.log('p' + n + ':' + px+','+py);
+                            point= fix_locations(point);
+                            n++;
+                            locations['p' + n] =point;
+                          }
+                        }
+                        try{
+                            draw_landmarks();
+                        }catch(e){
+                            alert('error test draw!!');
+                            console.log(e);
+                        }
+                    }catch(e){
+                        alert('error happend!! res=' + res);
+                        console.log(e);
+                    }
+                }).fail(function() {
+                    alert('can not get 2d landmark files...'); 
+                });
+            }
+            function draw_landmarks(){
+                var targetarray = ['p54','p31','p60', 'p70', 'p33','p64', 'p11','p15', 'p13','p17','p72', 'p19','p23', 'p21','p25', 'p75'];
+                var cls, ctxt;
+                $.each(locations, function(k, v){
+                    cls = '';
+                    ctxt = '';
+                    if(targetarray.indexOf(k) >= 0){
+                        cls = 'bigp';
+                        //ctxt = k;
+                    }
+                    draw_point(k, v, cls, ctxt);
+                });
+            }
+            function draw_point(k, v, cls, ctxt){
+                var p = '<div class="lmp '+cls+'" id="'+k+'">'+ctxt+'</div>';
+                var pobj = $(p);
+                pobj.appendTo('.sho-points').css({'position':'absolute', 'top':v.y+'px', 'left':v.x+'px'});
+            }
+            //腮紅位置計算
+            function cal_brush_loc(){
+                var pla = locations['p54'];//右耳上
+                var plb = locations['p31'];//右鼻翼外側
+                var plc = locations['p60'];//右下頰
+                var pra = locations['p70'];//左耳上
+                var prb = locations['p33'];//左鼻翼外側
+                var prc = locations['p64'];//左下頰
+                var loc = {};
+                loc.bld = (plb.x - pla.x) ;
+                var blxo = loc.bld / 6; //左側的腮紅中心位移計算
+                loc.blx = (pla.x + plb.x) / 2 - blxo; 
+                loc.bly = (pla.y + plb.y) / 2 + 12;
+                loc.blr = loc.bld / 80; // 左側的腮紅縮放計算
+                loc.bln = (plc.x - pla.x) / ( plb.x - pla.x) * 15; //左側腮紅旋轉角度計算(負值就逆旋轉)
+                draw_point('bl', {x:loc.blx, y:loc.bly}, 'bigp', 'BL');
+
+                loc.brd = (pra.x - prb.x) ;
+                var brxo = loc.bld / 5.5; //左側的腮紅圓心位移計算
+                loc.brx = (pra.x + prb.x) / 2;
+                loc.bry = (pra.y + prb.y) / 2 + 12;
+                loc.brr = loc.brd / 80; // 右側的腮紅縮放計算
+                loc.brn = (prc.x - pra.x) / ( prb.x - pra.x) * -15; //右側腮紅旋轉角度計算(正值就逆旋轉)
+                draw_point('br', {x:loc.brx, y:loc.bry}, 'bigp', 'BR');
+                return loc;
+            }
+            //眼影位置計算
+            function cal_eye_loc(){
+                var ple4 = locations['p71'];//右眉下中
+                var ple5 = locations['p15'];//右眼外側
+                var ple6 = locations['p11'];//右眼內側
+                var ple7 = locations['p13'];//右眼上中
+
+                var pre4 = locations['p75'];//左眉下中
+                var pre5 = locations['p19'];//左眼內側
+                var pre6 = locations['p23'];//左眼外側
+                var pre7 = locations['p21'];//左眼上中
+                var loc = {};
+                loc.elxd = ple6.x - ple5.x; //右眼區寬度
+                loc.elyd = ple7.y - ple4.y; //右眼區高度
+                loc.elx = ple7.x - loc.elxd / 5;
+                loc.ely = (ple7.y + ple4.y) / 2 + loc.elyd / 3;
+                loc.erxd = pre6.x - pre5.x //左眼寬度
+                loc.eryd = pre7.y - pre4.y; //右眼區高度
+                loc.erx = pre7.x + loc.erxd / 5;
+                loc.ery = (pre7.y + pre4.y) / 2 + loc.eryd / 3;
+                return loc;
+            }
+
+            function fix_locations(p){
+                var new_p = {};
+                new_p.x = p.x -160;
+                new_p.y = p.y;
+                return new_p;
+            }
+            function get_text(furl, postdata, proc_handler){
+                $.ajax({
+                    method: "POST",
+                    url: furl,
+                    data: postdata,
+                }).done(function( res ) {
+                    if(typeof(proc_handler) === 'function') proc_handler(res);
+                });
+            }
+            function msgbox_show(title, content, buttons){
+                $('.btn-newadd').remove();
+                $('#btn-close-alert').show();
+                $('#alert-title').html(title);
+                $('#alert-content').html(content);
+                $('#alert-modal').modal('show');
+                if(buttons && Array.isArray(buttons)){
+                    $('#btn-close-alert').hide();
+                    $.each(buttons, function(k,v){
+                        var btn = '<a class="btn btn-primary btn-newadd" >'+v.text+'</a>';
+                        $(btn).click(v.click).appendTo('.modal-footer');
+                    });
+                }
+            }
+            function msgpage_show(title, data){
+                $('#pag-msg-title').html(title);
+                $('#pag-msg-content').html(data);
+                if(cur_show_page != '.pag-msg') show_page('.pag-msg');
+            }
+            function data_receiver(cmd){
+                if(cmd.substring(0,10) == 'get_pic_ok'){
+                    alert('start relaod picture');
+                    show_page('.pag-camera');
+                }
+            }
+            function login(){
+                var loginid = $('#loginid').val();
+                var passwd = $('#passwd').val();
+                if(!loginid || !passwd){
+                    msgbox_show('缺少必填的資料', '請輸入帳號及密碼後，再按下「登入」按鈕，謝謝！');
+                    return false;
+                }
+                if(mdb[loginid]){
+                    if(mdb[loginid].passwd != passwd){
+                        msgbox_show('登入失敗', '您輸入的帳號不存在，請檢查是否正確輸入後再試一次。');
+                        return false;
+                    }else{
+                        minfo = mdb[loginid];
+                        Cookies.set('minfo', minfo, { expires: 365 });
+                        show_page('.pag-index');
+                    }
+                }else{
+                    msgbox_show('登入失敗', '您輸入的帳號不存在，請檢查是否正確輸入後再試一次。');
+                    return false;
+                }
+                /*
+                get_data("do.php?cmd=login", {loginid:loginid, passwd:passwd}, function(res){
+                    if(res.minfo){
+                        Cookies.set('minfo', res.minfo, { expires: 365 });
+                        show_page('.pag-index');
+                    } 
+                });
+                */
+            }
+            function register(){
+                var loginid = $('#reg_loginid').val();
+                var passwd = $('#reg_passwd').val();
+                var name = $('#reg_name').val();
+                var email = $('#reg_email').val();
+                if(!loginid || !passwd || !name || !email){
+                     msgbox_show('缺少必填的資料', '請在輸入完整資料後，再按下「送出」按鈕，謝謝！');
+                     return false;
+                }
+                if(mdb[loginid]){
+                    msgbox_show('註冊失敗', '您要使用的帳號已經存在，請更換帳號後再試一次。');
+                    return false;
+                }
+                var new_minfo = {loginid:loginid, passwd:passwd, name:name, email:email};
+                mdb[loginid] = new_minfo;
+                Cookies.set('minfo', new_minfo, { expires: 365 });
+                show_page('.pag-index');
+                /*
+                get_data(glory_url + "/do.php?cmd=register", {loginid:loginid, passwd:passwd, name:name, email:email}, function(res){
+                    if(res.minfo){
+                        Cookies.set('minfo', res.minfo, { expires: 365 });
+                        show_page('.pag-index');
+                    } 
+                });*/
+                
+            }
+            function logout(){
+                minfo = {};
+                Cookies.remove('minfo');
+                show_page('.pag-login');
+            }
+            function toggle_slide_menu(selected){
+                $('#slidemenu').stop().animate({
+                    left: selected ? '-210px' : '0px'
+                });
+                $('#navbar-height-col').stop().animate({
+                    left: selected ? '-210px' : '0px'
+                });
+                $('.pag:visible').stop().animate({
+                    left: selected ? '0px' : '210px'
+                });
+                $(this).toggleClass('slide-active', !selected);
+                $('#slidemenu').toggleClass('slide-active');
+                $('.pag:visible, .navbar, body, .navbar-header').toggleClass('slide-active');
+            }
+            function setup(){
+                show_page('.pag-index');
+            }
+            function show_color_plate(cstyle, step, cnum){
+                var fund_array = ['fundation1', 'fundation2', 'fundation3'];
+                var brush_array = ['p176','p1685','p494','p170','p1767','p177'];
+                var eye_array = ['p162','p163','p655','p182','p244','p7525','p538','p535','p424'];
+                var cur_array;
+                if(step == 'fundation'){
+                    cur_array = fund_array;
+                }else if(step == 'brush'){
+                    cur_array = brush_array;
+                }else{
+                    cur_array = eye_array;
+                }
+                $('.color-plate div').remove();
+                $('.color-plate').attr('cstyle', cstyle).attr('step', step).attr('cnum', cnum);
+                $.each(cur_array, function(k,v){
+                    var div = '<div class="color-choose-btn '+v+'" onclick="choose_color(this);"></div>';
+                    $('.color-plate').append(div);
+                });
+                $('.color-plate').fadeIn();
+            }
+            function change_color(cstyle, step, cnum, classname){
+                var newclass = classname.replace("color-choose-btn ", "");
+                $('.pag-picture .swiper-slide[cstyle="'+cstyle+'"]').find('li[cnum="'+cnum+'"]').removeClass().addClass(newclass);
+                $('.color-plate').hide();
+            }
+            function changeMakeup(curswiper){
+                var slide = curswiper.slides[curswiper.activeIndex];
+                var cstyle = $(slide).attr('cstyle');
+                if(parseInt(cstyle) > 0){
+                    draw_face(cstyle);
+                }else{
+                    $('#photo-canvas').clearCanvas().drawImage({
+                        source: def_face,
+                        x: center_x, y: center_y,
+                        scale: 1
+                    });
+                }
+            }
+            function check_ink(s){
+                $('.inks .color-choose-btn').eq(s).html('<div class="ink-chk glyphicon glyphicon-ok"></div>');
+                s++;
+                if(s <= 7){
+                    ts = setTimeout(function(){check_ink(s)}, 1000);
+                }else{
+                    show_page('.pag-makeup');
+                }
+            }
+            function show_list() {
+                var selected = $('#slidemenu').hasClass('slide-active');
+                toggle_slide_menu(selected);
+            }
+            function choose_color(obj){
+                var cstyle = $('.color-plate').attr('cstyle');
+                var step = $('.color-plate').attr('step');
+                var cnum = $('.color-plate').attr('cnum');
+                var classname = $(obj).attr('class');
+                change_color(cstyle, step, cnum, classname);
+            }
+        </script>
+        <script>
+        $(document).ready(function () {
+            window.addEventListener("beforeunload", function (e) {
+                var confirmationMessage = '您是否確定要離開應用程式？';
+                (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+                return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+            });
+            $('#togglePoints').click(function(){
+                var ht = $(this).html();
+                if(ht == 'Show'){
+                    $(this).html('Hide');
+                    $('.sho-points').show();
+                }else{
+                    $(this).html('Show');
+                    $('.sho-points').hide();
+                }
+            });
+            $('#debug').click(function(){
+                $('#msg-code').toggle();
+            });
+            $("body").on("click touchend", '.pag-picture .swiper-slide .nav a', function (e) {
+                var target = $(this).attr('aria-controls');
+                $(this).parents('.swiper-slide').find('.tab-pane').hide();
+                $(this).parents('.swiper-slide').find('.' + target).show();
+            });
+            $("body").on("click touchend", '.style-colors li', function(){
+                var cstyle = $(this).parents('.swiper-slide').attr('cstyle');
+                var step = $(this).parents('.style-colors').attr('step');
+                var cnum = $(this).attr('cnum');
+                show_color_plate(cstyle, step, cnum);
+            });
+            $("body").on("click touchend", '.pag-picture .swiper-slide h3', function (e) {
+                if($('.picture-actions').hasClass('mvd')){
+                    $('.picture-actions').removeClass('mvd').animate({'bottom':action_bottom});
+                }else{
+                    $('.picture-actions').addClass('mvd').animate({'bottom':'0px'});
+                }
+            });
+            action_bottom = $('.picture-actions').css("bottom");
+        });
+        </script>
     </body>
 </html>
