@@ -48,7 +48,8 @@ try{
       console.log('Receive makeup_complete, transfer to App');
       io.emit('cmd', 'makeup_complete');
     }else{
-      return;
+      console.log('Receive unknown message, transfer to App');
+      io.emit('msg', '化妝機訊息：'+data.toString());
     }
   });
   client.on('error', function(err) {
