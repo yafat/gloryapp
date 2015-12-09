@@ -47,12 +47,6 @@ try{
     }else if(data.toString().substring(0, 15) == 'makeup_complete'){
       console.log('Receive makeup_complete, transfer to App');
       io.emit('cmd', 'makeup_complete');
-    }else if(data.toString().substring(0, 11).toLowerCase() == 'robot_error'){
-      console.log('Receive Robot Error, transfer to App');
-      io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
-    }else if(data.toString().substring(0, 11).toLowerCase() == 'robot_error'){
-      console.log('Receive Robot Error, transfer to App');
-      io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
     }else{
       var msg = data.toString();
       proc_robot_msg(msg);
