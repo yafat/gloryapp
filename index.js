@@ -47,9 +47,15 @@ try{
     }else if(data.toString().substring(0, 15) == 'makeup_complete'){
       console.log('Receive makeup_complete, transfer to App');
       io.emit('cmd', 'makeup_complete');
+    }else if(data.toString().substring(0, 11).toLowerCase() == 'robot_error'){
+      console.log('Receive Robot Error, transfer to App');
+      io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
+    }else if(data.toString().substring(0, 11).toLowerCase() == 'robot_error'){
+      console.log('Receive Robot Error, transfer to App');
+      io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
     }else{
-      console.log('Receive unknown message, transfer to App');
-      io.emit('msg', '化妝機訊息：'+data.toString());
+      var msg = data.toString();
+      proc_robot_msg(msg);
     }
   });
   client.on('error', function(err) {
@@ -96,6 +102,37 @@ function swrite(cmd){
     }else{
       console.log('Can not send cmd:'+cmd+', Socket is not connected.');
     }
+}
+function proc_robot_msg(msg){
+  if(msg.substring(0, 11).toLowerCase() == 'robot_error'){
+    console.log('Receive Robot Error, transfer to App');
+    io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
+  }else if(msg.substring(0, 8).toLowerCase() == 'robot_ok'){
+    console.log('Receive Robot Ok, transfer to App');
+    io.emit('msg', '化妝機機械正常。');
+  }else if(msg.substring(0, 9).toLowerCase() == 'cam_error'){
+    console.log('Receive Cam Error, transfer to App');
+    io.emit('msg', '3D相機出現異常，請重新啟動化妝機！');
+  }else if(msg.substring(0, 6).toLowerCase() == 'cam_ok'){
+    console.log('Receive Cam Ok, transfer to App');
+    io.emit('msg', '3D相機正常。');
+  }else if(msg.substring(0, 9).toLowerCase() == 'ink_error'){
+    console.log('Receive Ink Error, transfer to App');
+    io.emit('msg', '色匣色號無法辨識或安裝錯誤，請重新安裝！');
+  }else if(msg.substring(0, 6).toLowerCase() == 'ink_ok'){
+    console.log('Receive Cam Ok, transfer to App');
+    io.emit('msg', '色匣正常。');
+  }else if(msg.substring(0, 7).toLowerCase() == 'ink_low_ok'){
+    console.log('Receive Ink Low Ok, transfer to App');
+    io.emit('msg', '色匣墨量正常。');
+  }else if(msg.substring(0, 8).toLowerCase() == 'ink_low='){
+    var wrong_inks = msg.substring(8);
+    console.log('Receive Ink Low Error at '+wrong_inks+', transfer to App');
+    io.emit('msg', '色匣編號：'+wrong_inks+'低墨量，請更換新色匣。');
+  }else{
+    console.log('Receive unknown message, transfer to App');
+    io.emit('msg', '化妝機訊息：'+msg);
+  }
 }
 var rl = readline.createInterface({
   input: process.stdin,
