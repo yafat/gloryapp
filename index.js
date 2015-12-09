@@ -19,10 +19,8 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
   socket.on('cmd', function(cmd){
-    console.log('rec cmd='+cmd);
-    if(cmd == 'get_pic' || cmd == 'select_type=1' || cmd == 'select_type=2' || cmd == 'select_type=3'){
-      swrite(cmd);
-    }
+    console.log('from local socket cmd: '+cmd);
+    swrite(cmd);
   });
 });
 
@@ -92,10 +90,10 @@ function reConnectSocket(){
 function swrite(cmd){
   console.log('Send Socket cmd:'+cmd);
   if(is_connected === true){
-      client.write(cmd + '\n');
-    }else{
-      console.log('Can not send cmd:'+cmd+', Socket is not connected.');
-    }
+    client.write(cmd + '\n');
+  }else{
+    console.log('Can not send cmd:'+cmd+', Socket is not connected.');
+  }
 }
 function proc_robot_msg(msg){
   if(msg.substring(0, 11).toLowerCase() == 'robot_error'){
