@@ -1061,6 +1061,33 @@
             <div class="clearfix"></div>
             </div>
         </div>
+        <div class="pag pag-sigtest">
+            <div class="pag-content">
+                <h2 class="qa-title">訊號測試</h2>
+                <div>
+                    <a onclick="send('Cam_Check')" class="sbt">相機狀態測試</a>
+                </div>
+                <div>
+                    <a onclick="send('Robot_Check')" class="sbt">機械狀態測試</a>
+                </div>
+                <div>
+                    <a onclick="send('Ink_Check')" class="sbt">色匣測試</a>
+                </div>
+                <div>
+                    <a onclick="send('Ink_Low_Check')" class="sbt">低墨測試</a>
+                </div>
+            </div>
+            <div class="pag-footer">
+                <div class="text-center"> 
+                    <a href="#" id="back-index" class="sbt" onclick="show_page('')" >返回畫面</a>
+                </div>
+            </div>
+            <div class="pag-funcs-content">
+            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
+            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
+            <div class="clearfix"></div>
+            </div>
+        </div>
         <div id="alert-modal" class="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -1113,6 +1140,7 @@
                 <li><a onclick="show_page('.pag-index')">首頁</a></li>
                 <li><a onclick="show_page('.pag-camera');">拍照</a></li>
                 <li><a onclick="show_page('.pag-picture');">選擇樣式</a></li>
+                <li><a onclick="show_page('.pag-sigtest')">訊號測試</a></li>
                 <li><div class="slidemenu-li-title">說明文件</div></li>
                 <li><a onclick="show_page('.pag-manual')">使用說明</a></li>
                 <li><a onclick="show_page('.pag-about')">關於榮美</a></li>
@@ -1204,7 +1232,7 @@
                             });
                             socket.on('msg', function (data) {
                                 console.log('msg from socket io : '+data);
-                                msgpage_show('發生錯誤', data);
+                                msgpage_show('系統訊息', data);
                             });
                             socket.on('disconnect', function(){
                                 socket_connected = false;
@@ -1427,7 +1455,6 @@
                     $('.photo-msg-loader').css('opacity',0);
                 }
             }
-
             function send(str) {
                 socket.emit('cmd', str);
             }
