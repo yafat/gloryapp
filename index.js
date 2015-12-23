@@ -7,6 +7,7 @@ var net = require('net');
 var client = new net.Socket();
 var is_connected = false;
 var retry = 0;
+var last_cmd = "";
 app.use(express.static('www'));
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/www/index.html');
@@ -88,6 +89,7 @@ function reConnectSocket(){
   });
 }
 function swrite(cmd){
+  last_cmd = cmd;
   console.log('Send Socket cmd:'+cmd);
   if(is_connected === true){
     client.write(cmd + '\n');
@@ -121,6 +123,20 @@ function proc_robot_msg(msg){
     var wrong_inks = msg.substring(8);
     console.log('Receive Ink Low Error at '+wrong_inks+', transfer to App');
     io.emit('msg', '色匣編號：'+wrong_inks+'低墨量，請更換新色匣。');
+  }else if(msg.substring(0, 13).toLowerCase() == 'get_pic_error'){
+    console.log('Receive Get Pic Error, transfer to App');
+    io.emit('msg', '拍照錯誤，請重新再試一次!');
+  }else if(msg.substring(0, 2).toLowerCase() == 'ok'){
+    if(last_cmd == 'Cam_Check'){
+      proc_robot_msg('cam_ok');
+    }else if(last_cmd == 'Robot_Check'){
+      proc_robot_msg('robot_ok');
+    }else if(last_cmd == 'Ink_Check'){
+      proc_robot_msg('ink_ok');
+    }else if(last_cmd == 'Ink_Low_Check'){
+      proc_robot_msg('ink_low_ok');
+    }
+    return;
   }else{
     console.log('Receive unknown message, transfer to App');
     io.emit('msg', '化妝機訊息：'+msg);
