@@ -126,7 +126,7 @@ function proc_robot_msg(msg){
   }else if(msg.substring(0, 13).toLowerCase() == 'get_pic_error'){
     console.log('Receive Get Pic Error, transfer to App');
     io.emit('msg', '拍照錯誤，請重新再試一次!');
-  }else if(msg.substring(0, 6).toLowerCase() == 'init_ok'){
+  }else if(msg.substring(0, 7).toLowerCase() == 'init_ok'){
     console.log('Receive Cam Ok, transfer to App');
     io.emit('rep', '開機啟動程序正常。');
   }else if(msg.substring(0, 2).toLowerCase() == 'ok'){
