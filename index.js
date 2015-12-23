@@ -103,22 +103,22 @@ function proc_robot_msg(msg){
     io.emit('msg', '化妝機機械出現異常，請重新啟動化妝機！');
   }else if(msg.substring(0, 8).toLowerCase() == 'robot_ok'){
     console.log('Receive Robot Ok, transfer to App');
-    io.emit('msg', '化妝機機械正常。');
+    io.emit('rep', '化妝機機械正常。');
   }else if(msg.substring(0, 9).toLowerCase() == 'cam_error'){
     console.log('Receive Cam Error, transfer to App');
     io.emit('msg', '3D相機出現異常，請重新啟動化妝機！');
   }else if(msg.substring(0, 6).toLowerCase() == 'cam_ok'){
     console.log('Receive Cam Ok, transfer to App');
-    io.emit('msg', '3D相機正常。');
+    io.emit('rep', '3D相機正常。');
   }else if(msg.substring(0, 9).toLowerCase() == 'ink_error'){
     console.log('Receive Ink Error, transfer to App');
     io.emit('msg', '色匣色號無法辨識或安裝錯誤，請重新安裝！');
   }else if(msg.substring(0, 6).toLowerCase() == 'ink_ok'){
     console.log('Receive Cam Ok, transfer to App');
-    io.emit('msg', '色匣正常。');
+    io.emit('rep', '色匣正常。');
   }else if(msg.substring(0, 7).toLowerCase() == 'ink_low_ok'){
     console.log('Receive Ink Low Ok, transfer to App');
-    io.emit('msg', '色匣墨量正常。');
+    io.emit('rep', '色匣墨量正常。');
   }else if(msg.substring(0, 8).toLowerCase() == 'ink_low='){
     var wrong_inks = msg.substring(8);
     console.log('Receive Ink Low Error at '+wrong_inks+', transfer to App');
@@ -126,6 +126,9 @@ function proc_robot_msg(msg){
   }else if(msg.substring(0, 13).toLowerCase() == 'get_pic_error'){
     console.log('Receive Get Pic Error, transfer to App');
     io.emit('msg', '拍照錯誤，請重新再試一次!');
+  }else if(msg.substring(0, 6).toLowerCase() == 'init_ok'){
+    console.log('Receive Cam Ok, transfer to App');
+    io.emit('rep', '開機啟動程序正常。');
   }else if(msg.substring(0, 2).toLowerCase() == 'ok'){
     if(last_cmd == 'Cam_Check'){
       proc_robot_msg('cam_ok');
@@ -135,6 +138,8 @@ function proc_robot_msg(msg){
       proc_robot_msg('ink_ok');
     }else if(last_cmd == 'Ink_Low_Check'){
       proc_robot_msg('ink_low_ok');
+    }else if(last_cmd == 'Init_Check'){
+      proc_robot_msg('init_ok');
     }
     return;
   }else{
@@ -156,6 +161,10 @@ rl.on('line', function (cmd) {
   }else if(cmd == 'send_msg'){
     rl.question("Input the message to send to App ", function(data) {
         io.emit('msg', data);
+    });
+  }else if(cmd == 'send_rep'){
+    rl.question("Input the Repy text to simulate from Robot to App ", function(data) {
+        io.emit('rep', data);
     });
   }else if(cmd == 'send_cmd'){
     rl.question("Input the command to send to App ", function(data) {
