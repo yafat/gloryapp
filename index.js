@@ -129,6 +129,9 @@ function proc_robot_msg(msg){
   }else if(msg.substring(0, 7).toLowerCase() == 'init_ok'){
     console.log('Receive Cam Ok, transfer to App');
     io.emit('rep', '開機啟動程序正常。');
+  }else if(msg.substring(0, 8).toLowerCase() == 'ink_info'){
+    var inks = msg.substring(8);
+    io.emit('rep', inks);
   }else if(msg.substring(0, 2).toLowerCase() == 'ok'){
     if(last_cmd == 'Cam_Check'){
       proc_robot_msg('cam_ok');
