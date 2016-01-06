@@ -91,11 +91,20 @@ function reConnectSocket(){
 function swrite(cmd){
   last_cmd = cmd;
   console.log('Send Socket cmd:'+cmd);
+  if(cmd == 'init_check'){
+    setTimeout(send_fake_sig(1),1000);
+  }
   if(is_connected === true){
     client.write(cmd + '\n');
   }else{
     console.log('Can not send cmd:'+cmd+', Socket is not connected.');
   }
+}
+function send_fake_sig(s){
+  var retsig = "fake" + s;
+  io.emit('rep', retsig);
+  s++;
+  if(s <=7) setTimeout(send_fake_sig(s),1000);
 }
 function proc_robot_msg(msg){
   if(msg.substring(0, 11).toLowerCase() == 'robot_error'){
