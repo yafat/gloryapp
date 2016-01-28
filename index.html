@@ -1,1282 +1,852 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="mobile-web-app-capable" content="yes">
-        <title>Glory Makeup</title>
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- meta -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, width=device-width" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="Content-Security-Policy"/>
+<title>GLORY</title>
+<!-- CSS -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/swiper.min.css" rel="stylesheet">
+<link href="css/jquery-ui.min.css" rel="stylesheet">
+<link href="css/jquery-ui.structure.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/yafat.css" rel="stylesheet">
+<!-- JS -->
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>
+<script src="js/swiper.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.form.js"></script>
+<script src="js/js.cookie.js"></script>
+<script src="js/jcanvas.min.js"></script>
+<script src="js/script.js"></script>
+<script src="js/pic.js"></script>
+<!-- clm to get face landmark dynamically -->
+<script src="js/clmtrackr.js"></script>
+<script src="js/model_pca_20_svm.js"></script>
+<!-- pixastic to change the image style -->
+<script src="js/pixastic.js"></script>
+<script src="js/pixastic.effects.js"></script>
+<script src="js/pixastic.worker.js"></script>
+<!-- monaca components -->
+<link rel="stylesheet" href="components/loader.css">
+<script src="components/loader.js"></script>
 
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="pink_bg pag pag-init no-header">
+        <img id="Welcome_page" src="images/Welcome_page.jpg" /> 
+    </div>
+    <div class="pink_bg pag pag-index">
         
-        <!-- Glyphicon Animate Css-->
-        <link rel="stylesheet" href="css/glyphicon-animate.css">
-        <link rel="stylesheet" href="assets/swiper/css/swiper.min.css" >
-        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-        <script src="js/jquery.form.js"></script>
-        <script src="js/js.cookie.js"></script>
-        <script src="assets/swiper/js/swiper.jquery.min.js"></script>
-        <script src="js/script.js"></script>
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script defer src="js/jcanvas.min.js"></script>
-        
-        <style type="text/css">
-        #msg-code{
-            position:absolute;
-            bottom:0;
-            width:100%;
-            height:20px;
-            color:#fff;
-            display:none;
-        }
-        body{
-            width:100%;
-            height:100%; 
-            color:#fff;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none; 
-        }
-        .init-slider{
-            width:100%;
-            height:100%;
-        }
-        .forget-passwd{
-            display: block;
-            text-align: right;
-            margin-right: 20%;
-            margin-top: 20px;
-        }
-        #login-form{
-            padding: 20px;
-        }
-        .form-group.form-inline label{
-            display:inline-block !important;
-            width:20% !important;
-        }
-        .form-group.form-inline input{
-            display:inline-block !important;
-            width:70% !important;
-        }
-        .socket-data, .sho-pic, .steps, .steps-back{
-            display:none;
-        }
-        .steps{
-            padding-top:25%;
-        }
-        .sho-points-container{
-            width:100%;
-            height:360px;
-            position: absolute;
-        }
-        .sho-points{
-            width:320px;
-            height:360px;
-            margin: 0 auto;
-            overflow: hidden;
-            position: relative;
-            display:none;
-        }
-        .lmp{
-            position:absolute;
-            width:2px;
-            height:2px;
-            background:#666;
-        }
-        .lmp.bigp{
-            width:3px;
-            height:3px;
-            background:#f00;
-        }
-        .pag-camera{ /*.pag-index*/
-            display:none;
-        }
-        .pag{
-            width:100%;
-            height:100%;
-            position:absolute;
-            background:#000;
-            display: none;
-        }
-        .pag.pag-init{
-            display:block;
-        }
-        .bckcvr{
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-        .pag-header{
-            background: url(img/background-Top.png) repeat-y center center;
-            padding: 40px 5px 5px 5px;
-        }
-        .pag-footer{
-            width: 100%;
-            position: fixed;
-            text-align: center;
-            bottom: 0;
-            padding: 10px 0;
-            background: #000;
-        }
-        .pag-index .pag-footer{
-            background: url(img/background-down.png) no-repeat center top;
-            padding-top: 30px;
-            min-height: 150px;
-        }
-        .pag-content{
-            position:relative;
-        }
-        .logo{
-            width:25%;
-            margin:5px auto;
-        }
-        .logo img, .pag-content img{
-            width:100%;
-        }
-        .gear-bt{
-            position: absolute;
-            top:25px;
-            left:25px;
-            color:#fff;
-            font-size: 1.5em;
-        }
-        .sbt{
-            display:block;
-            width:70%;
-            margin:10px auto;
-            border:#fff solid 1px;
-            text-align: center;
-            padding:10px 0;
-            color:#fff;
-            cursor:pointer;
-        }
-        .sbt.inline{
-            display: inline-block;
-            width: auto;
-            padding: 5px 10px;
-            margin: 15px 6px;
-        }
-        a.sbt:link, a.sbt:visited, a.sbt:hover, a.sbt:focus, a.sbt:active{
-            color:#fff;
-            text-decoration: none;
-        }
-        .modal-content{
-            background: #000;
-            color:#fff;
-        }
-        .modal-content .close{
-            color:#fff;
-        }
-        .photo-container{
-            padding:45px 0 0 0;
-            text-align: center;
-            position: relative;
-        }
-        .photo-deco{
-            max-width:80%;
-            margin:auto;
-        }
-        .photo-deco img{
-            max-width:100%;
-        }
-        .pag-funcs-content{
-            position:absolute;
-            top:0;
-            width:100%;
-            padding: 10px;
-        }
-        .pag-funcs{
-            display:block;
-            width: 24px;
-            height: 24px;
-            text-align: center;
-            color: #ccc;
-            padding-top: 2px;
-            border: #ccc solid 1px;
-            border-radius: 15px;
-        }
-        .list-btn{
-            background: url(img/function-button.png) no-repeat;
-            background-size: 100% 100%;
-        }
-        .del-btn{
-            background: url(img/Delete-button.png) no-repeat;
-            background-size: 100% 100%;
-        }
-        .photo-msg{
-            position:absolute;
-            width:60%;
-            top:45%;
-            left:20%;
-            height:60px;
-            margin-top:-30px;
-        }
-        .photo-msg-loader{
-            font-size: 2em;
-        }
-        .style-choice-txt{
-            padding:25px 0;
-            color: #fff;
-        }
-        #style-share{
-            display: block;
-            position: absolute;
-            top: 100%;
-            background: #000;
-            width: 100%;
-            z-index: 9;
-            height: 200px;
-            padding-top: 25px;
-        }
-        #style-save{
-            display: block;
-            position: absolute;
-            top: 100%;
-            background: #000;
-            width: 100%;
-            z-index: 9;
-            height: 250px;
-            padding-top: 0px;
-        }
-        #style-save h3{
-            padding-bottom: 25px;
-        }
-        .style-option a{
-            display:inline-block;
-            margin:0 10px;
-        }
-        .style-footer{
-            position:absolute; top:200px; left:0; width:100%;
-        }
-        .inks{
-            width:96%;
-            margin:auto;
-            color:#fff;
-            padding-bottom:20px;
-        }
-        .ink-color{
-            width:80px;
-            height:80px;
-            border-radius:40px;
-            position: relative;
-        }
-        .ink-color .err-color{
-            width:60px;
-            height:60px;
-            border-radius:30px;
-            position:absolute;
-            left:10px;
-            top:10px;
-            padding-top:20px;
-            color:#000;
-            text-align:center;
-            box-shadow: 0 0 8px black;
-        }
-        #slidemenu {
-            background: #333;
-            left: -100%;
-            width: 210px;
-            min-width: 0;
-            position: absolute;
-            padding-left: 0;
-            z-index: 2;
-            top: 0px;
-            margin: 0;
-        }
-        #slidemenu a{
-            color:#fff;
-        }
-        #slidemenu .navbar-nav {
-            min-width: 0;
-            width: 100%;
-            margin: 0;
-        }
-        #slidemenu .navbar-nav .dropdown-menu li a {
-            min-width: 0;
-            width: 80%;
-            white-space: normal;
-        }
-        .slidemenu-li-title{
-            background: #666;
-            padding: 10px 15px;
-            font-size: 1.1em;
-        }
-        #slide-nav {
-            border-top: 0
-        }
-        #navbar-height-col {
-            position: fixed;
-            top: 0;
-            height: 100%;
-            bottom:0;
-            width: 210px;
-            left: -210px;
-            background: #333;
-        }
-        .pag-init-bg{
-            width:100%;
-            height:100%;
-            background:#FF33CC;
-        }
-        .pag-init-bg .swiper-slide{
-            width:100%;
-            height:100%;
-            text-align: center;
-            background-repeat:no-repeat;
-            background-size:cover;
-        }
-        .pag-init-bg .logo{
-            position: absolute;
-            left:50%;
-            top:50%;
-            transform:translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%); /* IE 9 */
-            -webkit-transform: translate(-50%, -50%); /* Safari */
-        }
-        .bt-list{
-            padding: 0 0 0 30px;
-            margin: 0;
-            list-style: none;
-            text-align: left;
-        }
-        .bt-list li{
-            padding:5px;
-        }
-        .bt-list li label{
-            padding-left: 10px;
-            font-size: 18px;
-            color:#fff;
-        }
-        .msg{
-            padding:25% 0;
-            margin:0 auto;
-            width:80%;
-        }
-        .choose-makeup{
-            background: #000;
-            width: 100%;
-        }
-        .choose-makeup .nav-tabs{
-            text-align: center;
-            width: 280px;
-            margin: 0 auto;
-        }
-        .choose-makeup .nav-tabs>li {
-            display: inline-block;
-            float:none;
-        }
-        .style-colors{
-            list-style: none;
-            padding:0;
-            margin: 10px 0 0 0;
-            text-align: center;
-        }
-        .style-colors li{
-            display:inline-block;
-            margin: 0 10px 0 0;
-            padding: 30px;
-            border-radius: 30px;
-            border:#fff solid 1px;
-        }
-        .picture-actions{
-            width: 100%;
-            position: fixed;
-            text-align: center;
-            bottom:0;
-            padding: 0px 0;
-            background: #000;
-        }
-        @media screen and (max-height: 510px) {
-            .picture-actions{
-                bottom:-56px;
-            }
-        }
-
-        .choose-makeup .swiper-button-prev, .choose-makeup .swiper-button-next{
-            margin-top:-108px;
-        }
-        .fundation1{ background-color: #f5c9a2; }
-        .fundation2{ background-color: #dba976; }
-        .fundation3{ background-color: #c4905e; }
-        .p176{ background-color: rgb(249, 175, 173); }
-        .p1685{ background-color: rgb(132, 53, 17); }
-        .p162{ background-color: rgb(249, 198, 170); }
-        .p163{ background-color: rgb(252, 158, 112); }
-        .p655{ background-color: rgb(12, 28, 71); }
-        .p494{ background-color: rgb(242, 173, 178);}
-        .p170{ background-color: rgb(249, 137, 114);}
-        .p182{ background-color: rgb(249, 191, 193);}
-        .p244{ background-color: rgb(237, 160, 211);}
-        .p7525{ background-color: rgb(117, 56, 2);}
-        .p1767{ background-color: rgb(249, 178, 183); }
-        .p177{ background-color: rgb(249, 130, 127);}
-        .p538{ background-color: rgb(214, 211, 214);}
-        .p535{ background-color: rgb(155, 163, 183);}
-        .p424{ background-color: rgb(130, 127, 119);}
-        .color-plate{
-            position: fixed;
-            width: 270px;
-            background: #000;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            -ms-transform: translate(-50%, -50%); /* IE 9 */
-            -webkit-transform: translate(-50%, -50%); /* Safari */
-            border-radius: 10px;
-            padding:20px;
-            display: none;
-            z-index: 9;
-        }
-        .color-choose-btn{
-            display: inline-block;
-            margin: 0 10px 0 0;
-            width: 62px;
-            height:62px;
-            border-radius: 30px;
-            border:#fff solid 1px;
-            position: relative;
-        }
-        .inks-message{
-            padding:50px 0;
-        }
-        .inks{
-            padding:20px;
-        }
-        .ink-chk{
-            position:absolute;
-            left:50%;
-            top:50%;
-            margin: -15px 0 0 -15px;
-            width: 30px;
-            height:30px;
-            font-size:30px;
-        }
-        .emerg-btn{
-            width: 60px;
-            height: 60px;
-            border-radius: 30px;
-            border: #fff solid 4px;
-            background-color: #900;
-            position: relative;
-            cursor: pointer;
-            display: inline-block;
-        }
-        .modal-dialog{
-            top: 150px;
-            position: fixed;
-            width: 80%;
-            margin: 0 10%;
-        }
-        #pag-msg-title{
-            margin-top: 180px;
-            text-align: center;
-        }
-        #pag-msg-content{
-            width:80%;
-            margin:0 auto;
-            padding: 25px 0 0 0;
-            text-align: center;
-            color: #fff;
-        }
-        .pag-title{
-            margin-top: 180px;
-            text-align: center;
-        }
-        .pag-text{
-            width:80%;
-            margin:0 auto;
-            padding: 25px 0 0 0;
-            text-align: center;
-            color: #fff;
-            text-align: left;
-        }
-        .qa-title{
-            text-align: center;
-        }
-        .qa-q{
-            font-weight: bold;
-        }
-        </style>
-    </head> 
-    <body style="background:#000;">
-        <div class="pag pag-init">
-            <div class="pag-init-bg">
-                <div class="swiper-container init-slider">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide" style="background-image:url('img/makeup index_A.jpg');"></div>
-                        <div class="swiper-slide" style="background-image:url('img/makeup index_B.jpg')"></div>
-                        <div class="swiper-slide" style="background-image:url('img/makeup index_C.jpg')"></div>
+        <main class="index_slider_block">
+            <!-- Swiper -->
+            <div id="index_sliders" class="swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="images/banner_1.png"></div>
+                    <div class="swiper-slide"><img src="images/banner_2.png"></div>
+                    <div class="swiper-slide"><img src="images/banner_3.png"></div>
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+        </main>
+        <footer class="index_menu_block">
+            <a class="quick_makeup_btn" ><img src="images/quick_makeup.png"><p>快捷化妝</p></a>
+            <a onclick="show_page('.pag-picture')"><img src="images/choice_style.png"><p>選擇樣式</p></a>
+            <a onclick="show_page('.pag-camera')"><img src="images/take_photo.png"><p>拍照</p></a>
+            <a onclick="show_page('.pag-settings')" id="nav-btn-list"><i class="fa fa-cog index-setting-icon"></i><p>設定</p></a>
+            <div class="clear"></div>
+        </footer>
+    </div>
+    <div class="pink_bg pag pag-login">
+        <main class="login_form_block">
+            <img class="white_logo" src="images/logo.png">
+            <form id="login-form">
+                <div class="form-flat">
+                <input type="text" name="loginid" id="loginid" value="" placeholder="輸入帳號" />
+                <input type="text" name="passwd" id="passwd" value="" placeholder="輸入密碼" />
+                </div>
+                <a onclick="login();" class="white_btn">LOGIN<i class="fa fa-angle-right"></i></a>
+            </form>
+            <a onclick="show_page('.pag-register')" class="white_btn link_title registered_member">註冊會員</a>
+            <div class="forgot_username_block">
+                <h2>忘記帳號</h2>
+                <div class="form-flat">
+                    <input type="text" name="forget-email" id="forget-email" value="" placeholder="請輸入您的手機號碼" />
+                </div>
+                <a onclick="send_forget('loginid');" class="white_btn">CONFIRM<i class="fa fa-angle-right"></i></a>
+                <p>我們將以簡訊傳送給您</p>
+            </div>
+            <div class="forgot_password_block">
+                <h2>忘記密碼</h2>
+                <div class="form-flat">
+                    <input type="text" name="forget-loginid" id="forget-loginid" value="" placeholder="請輸入您的Email" />
+                </div>
+                <a onclick="send_forget('passwd');" class="white_btn">CONFIRM<i class="fa fa-angle-right"></i></a>
+                <p>我們將把密碼寄至您信箱</p>
+            </div>
+        </main>
+        <footer class="login_form_footer">
+            <div class="forgot_username">
+            <a onclick="show_forget('loginid');" class="white_btn">忘記帳號</a></div>
+            <div class="forgot_password">
+            <a onclick="show_forget('passwd');" class="white_btn">忘記密碼</a>
+            </div>
+            <div class="clear"></div> 
+        </footer> 
+    </div>
+    <div class="pink_bg pag pag-register">
+        <main class="login_form_block">
+            <img class="white_logo" src="images/logo.png">
+            <div class="register_block">
+                <form action="" method="post" id="register_form">
+                    <div class="form-flat">
+                    <input type="text" name="reg_loginid" id="reg_loginid" placeholder="設定您的帳號" />
+                    <input type="password" name="reg_passwd" id="reg_passwd" placeholder="設定您的密碼" />
+                    <input type="password" name="reg_passwd_chk" id="reg_passwd_chk" placeholder="確認密碼" />
+                    </div>
+                    <a class="white_btn register_toggle_btn">NEXT STEP<i class="fa fa-angle-right"></i></a>
+                </form>
+                <a onclick="show_page('.pag-login')" class="link_title registered_member">取消註冊</a>
+            </div>
+            <div class="edit_member_block">
+                <form action="" method="post" id="register_info">
+                    <div class="form-flat">
+                    <input type="text" name="reg_name" id="reg_name" placeholder="設定您的姓名" />
+                    <input type="text" name="reg_email" id="reg_email" placeholder="設定Email" />
+                    <input type="text" name="reg_mobile" id="reg_mobile" placeholder="設定手機號碼" />
+                    </div>
+                    <a class="white_btn register_toggle_btn">BACK<i class="fa fa-angle-right"></i></a>
+                    <a onclick="edit_member('register')" class="white_btn register_btn">REGISTER<i class="fa fa-angle-right"></i></a>
+                </form>
+                <a onclick="show_page('.pag-login')" class="link_title registered_member">取消註冊</a>
+            </div>
+        </main>
+    </div>
+    <div class="pink_bg pag pag-config">
+        <img class="white_logo" src="images/logo.png">
+        <div class="pag-config-tabs">
+            <a class="cfg-account-btn on">帳號 / 密碼</a>
+            <a class="cfg-info-btn off">基本資料</a>
+        </div>
+        <form role="form" id="config-form" >
+            <div class="cfg-account">
+                <input type="text" name="loginid" id="cfg_loginid" value="" placeholder="設定您的帳號" />
+                <input type="password" name="passwd" id="cfg_passwd" value="" placeholder="設定您的密碼" />
+                <input type="password" name="chk_passwd" id="cfg_passwd_chk" value="" placeholder="確認密碼" />
+            </div>
+            <div class="cfg-info">
+                <input type="text" name="name" id="cfg_name" value="" placeholder="設定您的姓名" />
+                <input type="text" name="email" id="cfg_email" value="" placeholder="設定您的Email" />
+                <input type="text" name="mobile" id="cfg_mobile" value="" placeholder="行動電話號碼" />
+            </div>
+            <a onclick="edit_member();" class="white_btn">SUBMIT<i class="fa fa-angle-right"></i></a>
+        </form>
+    </div>
+    <div class="pink_bg pag pag-setup"></div>
+    <div class="gray_bg pag pag-camera">
+        <main class="photo_ready_block">
+            <i class="fa fa-volume-up fa-5x"></i>
+            <p>準備拍照中</p>
+            <h5>請聽從語音提示進行拍照</h5>
+            <a onclick="startProc('stop_camera')" class="pink_btn">CANCEL<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div> <!--photo_ready-->
+    <div class="gray_bg pag pag-picture">
+        <main class="makeup_style_block">
+            <div class="big_face_circle">
+                <canvas id="photo_canvas" width="320" height="320"></canvas>
+                <canvas id="makeup_canvas" width="320" height="320"></canvas>
+                <div class="sho-points"></div>
+            </div>
+            <div class="big_circle_bg"></div>
+            <a class="before_btn">更換照片</a>
+            <a onclick="show_page('.pag-chk-inks')" id="makeup_btn" class="before_btn">MAKEUP</a>
+            <img id="photo_img" src="" style="display:none" />
+        </main>
+        <footer class="makeup_style_footer makeup_style_lists" style="display:block">
+            <div class="makeup_styles swiper-container">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide makeup_style_1 makeup_style_options" sn="1" onclick="choose_style('1');">
+                        <img src="images/face1.png">
+                        <i class="fa fa-check" style="display: none;"></i>
+                        <div class="makeup_style_name">都會知性</div>
+                    </div>
+                    <div class="swiper-slide makeup_style_2 makeup_style_options" sn="2" onclick="choose_style('2');">
+                        <img src="images/face2.png">
+                        <i class="fa fa-check" style="display: none;"></i>
+                        <div class="makeup_style_name">氣質甜美</div>
+                    </div>
+                    <div class="swiper-slide makeup_style_3 makeup_style_options" sn="3" onclick="choose_style('3');">
+                        <img src="images/face3.png">
+                        <i class="fa fa-check" style="display: none;"></i>
+                        <div class="makeup_style_name">時尚名媛</div>
+                    </div>
+                    <div class="swiper-slide makeup_style_options makeup_style_add">
+                        <i class="fa fa-plus"></i>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="pag pag-login">
-            <div class="photo-container">
-                <form role="form" id="login-form" >
-                <h2>登入會員</h2>
-                <div class="form-group  form-inline">
-                    <label for="loginid">帳號</label>
-                    <input type="text" class="form-control" name="loginid" id="loginid" value="" placeholder="請輸入帳號" />
+            <div class="makeup_style_funcs" id="main_funcs">
+                <div id="main_funcs_text">Please choose a style above</div>
+                <a class="link_title left_side btn_style_edit"><i class="fa fa-pencil"></i>EDIT</a>
+                <a class="link_title center_side" onclick="doShare()"><i class="fa fa-share-alt"></i>SHARE</a>
+                <a class="link_title right_side" onclick="show_page('.pag-manual')"><i class="fa fa-question"></i>HELP</a>
+            </div>
+        </footer>
+        <footer class="makeup_style_footer makeup_style_editor swiper-container" style="display:none">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <div class="footer_title"><img src="images/pressed_powder_icon.png"><span>PRESSED POWDER</span></div>
+                    <div step="foundation" class="fundation_style_list">
+                        <div class="footer_list footer_list_no1  c103" colorsn="103" onclick="draw_foundation('103')">
+                            <div class="footer_list_name">Darker</div>
+                        </div>
+                        <div class="footer_list footer_list_no2 c104" colorsn="104" onclick="draw_foundation('104')">
+                            <div class="footer_list_name">&nbsp;</div>
+                        </div>
+                        <div class="footer_list footer_list_no3 c105" colorsn="105" onclick="draw_foundation('105')">
+                            <div class="footer_list_name">Normal</div>
+                        </div>
+                        <div class="footer_list footer_list_no4 c106" colorsn="106" onclick="draw_foundation('106')">
+                            <div class="footer_list_name">&nbsp;</div>
+                        </div>
+                        <div class="footer_list footer_list_no5 c107" colorsn="107" onclick="draw_foundation('107')">
+                            <div class="footer_list_name">Lighter</div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="makeup_style_funcs">
+                        <a class="link_title left_side btn_style_edit trio"><i class="fa fa-times-circle-o"></i>BACK</a>
+                        <a onclick="save_styleName('新增樣式')" class="link_title center_side trio btn_detail_edit"><i class="fa fa-pencil"></i>SAVE</a>
+                        <a onclick="show_page('.pag-manual')" class="link_title right_side trio"><i class="fa fa-question"></i>HELP</a>
+                    </div>
                 </div>
-                <div class="form-group  form-inline">
-                    <label for="passwd">密碼</label>
-                    <input type="password" class="form-control" name="passwd" id="passwd" value="" placeholder="請輸入密碼" />
+                <div class="swiper-slide">
+                    <div class="style_chooser">
+                        <div class="footer_title"><img src="images/blush_icon.png"><span>BLUSH</span></div>
+                        <div step="blush" class="blush_style_list">
+                            <div class="footer_list" sn="1">
+                                <img src="images/blush_style1.png" />
+                            </div>
+                            <div class="footer_list" sn="2">
+                                <img src="images/blush_style2.png" />
+                            </div>
+                            <div class="footer_list" sn="3">
+                                <img src="images/blush_style3.png" />
+                            </div>
+                            <div class="footer_list" sn="4">
+                                <img src="images/blush_style4.png" />
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="makeup_style_funcs">
+                            <a class="link_title left_side btn_style_edit trio"><i class="fa fa-times-circle-o"></i>BACK</a>
+                            <a onclick="save_styleName('新增樣式')" class="link_title center_side trio btn_detail_edit"><i class="fa fa-pencil"></i>SAVE</a>
+                            <a onclick="show_page('.pag-manual')" class="link_title right_side trio"><i class="fa fa-question"></i>HELP</a>
+                        </div>
+                    </div>
+                    <div step="blush" class="area_editors blush_editors">
+                        <div class="area_colors swiper-no-swiping">
+                            <div class="area_color">
+                                <div class="area_circle" id="area_circle_A">A</div>
+                                <div class="area_color_list_container">
+                                    <ul class="area_color_list">
+                                        <li><div class="c201" colorsn="201"></div></li>
+                                        <li><div class="c202" colorsn="202"></div></li>
+                                        <li><div class="c312" colorsn="312"></div></li>
+                                        <li><div class="c322" colorsn="322"></div></li>
+                                        <li><div class="c401" colorsn="401"></div></li>
+                                        <li><div class="c402" colorsn="402"></div></li>
+                                    </ul>
+                                </div>
+                            </div>
+<!--                             <div class="area_color">
+                                <div class="area_circle" id="area_circle_B">B</div>
+                                <div class="area_color_list_container">
+                                    <ul class="area_color_list">
+                                        <li><div class="c201" colorsn="201"></div></li>
+                                        <li><div class="c202" colorsn="202"></div></li>
+                                        <li><div class="c312" colorsn="312"></div></li>
+                                        <li><div class="c322" colorsn="322"></div></li>
+                                        <li><div class="c401" colorsn="401"></div></li>
+                                        <li><div class="c402" colorsn="402"></div></li>
+                                    </ul>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="area_move">
+                            <a class="area-move-up"><i class="fa fa-angle-up"></i></a>
+                            <a class="area-move-left"><i class="fa fa-angle-left"></i></a>
+                            <a class="area-move-down"><i class="fa fa-angle-down"></i></a>
+                            <a class="area-move-right"><i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <div class="style_chooser">
+                        <div class="footer_title"><img src="images/eyeshadow_icon.png"><span>EYESHADOW</span></div>
+                        <div step="eyeshadow" class="eye_style_list">
+                            <div class="footer_list"  sn="1">
+                                <img src="images/eye_style1.png" />
+                            </div>
+                            <div class="footer_list"  sn="2">
+                                <img src="images/eye_style2.png" />
+                            </div>
+                            <div class="footer_list" sn="3">
+                                <img src="images/eye_style3.png" />
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="makeup_style_funcs">
+                            <a class="link_title left_side btn_style_edit trio"><i class="fa fa-times-circle-o"></i>BACK</a>
+                            <a onclick="save_styleName('新增樣式')" class="link_title center_side trio btn_detail_edit"><i class="fa fa-pencil"></i>SAVE</a>
+                            <a onclick="show_page('.pag-manual')" class="link_title right_side trio"><i class="fa fa-question"></i>HELP</a>
+                        </div>
+                    </div>
+                    <div step="eyeshadow" class="area_editors eyeshadow_editors">
+                        <div class="area_colors swiper-no-swiping">
+                            <div class="area_color">
+                                <div class="area_circle" id="area_circle_A">A</div>
+                                <div class="area_color_list_container">
+                                    <ul class="area_color_list">
+                                        <li><div colorsn="312" class="c312"></div></li>
+                                        <li><div colorsn="315" class="c315"></div></li>
+                                        <li><div colorsn="316" class="c316"></div></li>
+                                        <li><div colorsn="322" class="c322"></div></li>
+                                        <li><div colorsn="327" class="c327"></div></li>
+                                        <li><div colorsn="328" class="c328"></div></li>
+                                        <li><div colorsn="330" class="c330"></div></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="area_color">
+                                <div class="area_circle" id="area_circle_B">B</div>
+                                <div class="area_color_list_container">
+                                    <ul class="area_color_list">
+                                        <li><div colorsn="312" class="c312"></div></li>
+                                        <li><div colorsn="315" class="c315"></div></li>
+                                        <li><div colorsn="316" class="c316"></div></li>
+                                        <li><div colorsn="322" class="c322"></div></li>
+                                        <li><div colorsn="327" class="c327"></div></li>
+                                        <li><div colorsn="328" class="c328"></div></li>
+                                        <li><div colorsn="330" class="c330"></div></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="area_color">
+                                <div class="area_circle" id="area_circle_C">C</div>
+                                <div class="area_color_list_container">
+                                    <ul class="area_color_list">
+                                        <li><div colorsn="312" class="c312"></div></li>
+                                        <li><div colorsn="315" class="c315"></div></li>
+                                        <li><div colorsn="316" class="c316"></div></li>
+                                        <li><div colorsn="322" class="c322"></div></li>
+                                        <li><div colorsn="327" class="c327"></div></li>
+                                        <li><div colorsn="328" class="c328"></div></li>
+                                        <li><div colorsn="330" class="c330"></div></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="area_move">
+                            <a class="area-move-up"><i class="fa fa-angle-up"></i></a>
+                            <a class="area-move-left"><i class="fa fa-angle-left"></i></a>
+                            <a class="area-move-down"><i class="fa fa-angle-down"></i></a>
+                            <a class="area-move-right"><i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-navigator">
+                <i class="fa fa-angle-left makeup_editor_prev"></i>
+                <i class="fa fa-angle-right makeup_editor_next"></i>
+            </div>
+        </footer>
+    </div>
+    <div class="gray_bg pag pag-chk-inks">
+        <main class="color_check_block">
+            <i class="fa fa-cog fa-spin fa-5x" style="color:#df6f6f;"></i>
+            <p>檢查色閘中...</p>
+            <div style="padding:10%">請耐心等候系統回傳色匣資訊。</div>
+        </main>
+        <main class="color_detection_block" style="display:none;">
+            <div class="bg_circle"><!--<i class="fa fa-exclamation-circle"></i>-->
+                <div class="sm_circle sm_circle_1">
+                    <div class="ink_status"></div>
+                    <div class="ink_number">103</div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_2">
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                    <div class="ink_number">106</div>
+                </div>
+                <div class="sm_circle sm_circle_3">
+                    <div class="ink_status"></div>
+                    <div class="ink_number">107</div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_4">
+                    <div class="ink_number">201</div>
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_5">
+                    <div class="ink_number">202</div>
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_6">
+                    <div class="ink_number">312</div>
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_7">
+                    <div class="ink_number">315</div>
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_8">
+                    <div class="ink_number">316</div>
+                    <div class="ink_status"></div>
+                    <div class="ink_alert"><i class="fa fa-exclamation"></i></div>
+                </div>
+                <div class="sm_circle sm_circle_0">
+                    <div class="ink_clean">cleaning<br />solution</div>
+                    <div class="ink_status"></div>
+                </div>
+            </div>
+<!--             <a id="btnStartMakeup" class="pink_btn" onclick="check_ink();">RELOAD<i class="fa fa-angle-right"></i></a> -->
+            <a onclick="" class="pink_btn">SHOPPING ONLINE<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>
+    <div class="gray_bg pag pag-makeup">
+        <main class="photo_ready_block">
+            <i class="fa fa-volume-up fa-5x"></i>
+            <p>準備上妝</p>
+            <h5>請聽從語音提示開始上妝步驟</h5>
+            <a onclick="show_page('.pag-makeup-step');" class="pink_btn">CONTINUE<i class="fa fa-angle-right"></i></a>
+            <a onclick="startProc('stop_makeup');" class="pink_btn">STOP<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>
+    <div class="pink_bg pag pag-stop-makeup">
+        <main class="socket_error_block">
+            <i class="fa fa-exclamation-triangle fa-5x error_link_icon"></i>
+            <p class="link_title">使用者中止</p>
+            <a onclick="show_page('.pag-makeup')" class="white_btn">CONTINUE<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>
+    <div class="pink_bg pag pag-save-done"> 
+        <main class="save-done-block">
+            <i class="fa fa-floppy-o fa-5x"></i>
+            <form action="" method="post" id="save_done_form">
+                <p class="link_title"></p>
+                <input type="text" id="new_styleName" class="stylename" name="stylename" placeholder="請命名" />
+                <a class="white_btn styleName_save_btn" onclick="save_style();">SAVE<i class="fa fa-angle-right"></i></a>
+                <div class="styleName_continue_btn overlap-msg">化妝樣式已儲存完畢。請按下方按鈕返回設計畫面。</div>
+                <a onclick="show_page('.pag-picture')" class="white_btn styleName_continue_btn" onclick="save_continue();">CONTINUE<i class="fa fa-angle-right"></i></a>
+            </form>
+        </main>
+    </div>
+    <div class="gray_bg pag pag-makeup-step">
+        <main class="photo_ready_block">
+            <i class="fa fa-cog fa-spin fa-5x"></i>
+            <h1>STEP <span id="cur_step"></span></h1>
+            <a onclick="startProc('stop_makeup');" class="pink_btn">STOP<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>     
+    <div class="gray_bg pag pag-chk-connect ignore-socket-err">
+        <main class="link_error_block">
+            <i class="fa fa-exclamation-triangle fa-5x error_link_icon"></i>
+            <p>尚未設定連線</p>
+            <a onclick="set_mode('fun');" class="pink_btn">離線模式<i class="fa fa-angle-right"></i></a>
+            <div class="onlinemode_msg">
+                <div >
+                實機模式需要在與化妝機連線的狀態下才能使用。
+                目前APP尚未連線到化妝機。
+                <a onclick="show_page('.pag-socket-setup');" class="white_btn">設定連線<i class="fa fa-angle-right"></i></a>
+                </div>
+            </div>
+         </main>
+    </div>
+    <div class="pink_bg pag pag-socket-error ignore-socket-err">
+        <main class="socket_error_block">
+            <i class="fa fa-exclamation-triangle fa-5x error_link_icon"></i>
+            <p class="link_title">無法連線到化妝機</p>
+            <a onclick="show_page('.pag-socket-setup')" class="white_btn">設定連線<i class="fa fa-angle-right"></i></a>
+            <a onclick="set_mode('fun');" class="white_btn">離線模式<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>
+    <div class="gray_bg pag pag-socket-setup ignore-socket-err">
+        <main class="setup_block">
+            <i class="fa fa-bluetooth fa-5x"></i>
+            <div class="setup_title">
+                <p id="bt-msg">化妝機連線設置</p>
+            </div>     
+            <div class="wifi_setup">
+                <div class="form-group form-inline">
+                    <div class="label">Host</div>
+                    <input class="form-control" type="text" name="host" id="host" />
                 </div>
                 <div class="form-group form-inline">
-                    <button class="btn btn-default" type="button" onclick="login();">登入</button>
-                    <button class="btn btn-default" type="button" onclick="show_page('.pag-register')">註冊會員</button>
-                    <a class="forget-passwd">忘記密碼</a>
+                    <div class="label">Port</div>
+                    <input class="form-control" type="text" name="port" id="port" />
                 </div>
-                </form>
-            </div>
-        </div>
-        <div class="pag pag-register">
-            <div class="photo-container">
-                <form role="form" id="login-form" >
-                <h2>註冊會員</h2>
-                <div class="form-group  form-inline">
-                    <label for="reg_loginid">帳號</label>
-                    <input type="text" class="form-control" name="loginid" id="reg_loginid" value="" placeholder="請輸入帳號" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="reg_passwd">密碼</label>
-                    <input type="password" class="form-control" name="passwd" id="reg_passwd" value="" placeholder="請輸入密碼" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="reg_name">姓名</label>
-                    <input type="text" class="form-control" name="name" id="reg_name" value="" placeholder="請輸入姓名" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="reg_email">email</label>
-                    <input type="text" class="form-control" name="email" id="reg_email" value="" placeholder="請輸入Email" />
-                </div>
-                <div class="form-group form-inline">
-                    <button class="btn btn-default" type="button" onclick="register();">送出</button>
-                    <button class="btn btn-default" type="button" onclick="show_page('.pag-login');">返回登入</button>
-                </div>
-                </form>
-            </div>
-        </div>
-        <div class="pag pag-config">
-            <div class="photo-container">
-                <form role="form" id="login-form" >
-                <h2>會員資料</h2>
-                <div class="form-group  form-inline">
-                    <label for="cfg_loginid">帳號</label>
-                    <input type="text" class="form-control" name="loginid" id="cfg_loginid" value="" placeholder="請輸入帳號" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="cfg_passwd">密碼</label>
-                    <input type="password" class="form-control" name="passwd" id="cfg_passwd" value="" placeholder="請輸入密碼" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="cfg_name">姓名</label>
-                    <input type="text" class="form-control" name="name" id="cfg_name" value="" placeholder="請輸入姓名" />
-                </div>
-                <div class="form-group  form-inline">
-                    <label for="cfg_email">email</label>
-                    <input type="text" class="form-control" name="email" id="cfg_email" value="" placeholder="請輸入Email" />
-                </div>
-                <div class="form-group form-inline">
-                    <button class="btn btn-primary" type="button" onclick="edit_member();">送出</button>
-                    <button class="btn btn-default" type="button" onclick="logout()">登出</button>
-                </div>
-                </form>
-            </div>
-            <div class="pag-funcs-content">
-                <a class="pag-funcs pull-left list-btn" onclick="show_list();" href="#" ></a>
-                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                 
-                <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-setup">
-            <div class="photo-container">
-                <form role="form" id="login-form" >
-                <h2>設定</h2>
-                <div class="setup-group">
-                    <h4>藍芽設定</h4>
-                    <ul class="bt-list">
-                        
-                    </ul>
-                </div>
-                <!--
-                <div class="setup-group">
-                    <h4>帳號設定</h4>
-                    <div class="form-group  form-inline">
-                        <label for="reg_loginid">帳號</label>
-                        <input type="text" class="form-control" name="loginid" id="set_loginid" value="" placeholder="請輸入帳號" />
-                    </div>
-                    <div class="form-group  form-inline">
-                        <label for="reg_passwd">密碼</label>
-                        <input type="password" class="form-control" name="passwd" id="set_passwd" value="" placeholder="請輸入密碼" />
-                    </div>
-                    <div class="form-group  form-inline">
-                        <label for="reg_name">姓名</label>
-                        <input type="text" class="form-control" name="name" id="set_name" value="" placeholder="請輸入姓名" />
-                    </div>
-                    <div class="form-group  form-inline">
-                        <label for="reg_email">email</label>
-                        <input type="text" class="form-control" name="email" id="set_email" value="" placeholder="請輸入Email" />
-                    </div>
-                </div>
-                -->
-                <div class="form-group form-inline">
-                    <button class="btn btn-primary" type="button" onclick="setup();">送出</button>
-                </div>
-                </form>
-            </div>
-            <div class="pag-funcs-content">
-                <a class="pag-funcs pull-left list-btn" onclick="show_list();" href="#" ></a>
-                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                 
-                <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-index">
-            <div class="pag-header">
-                <div class="logo">
-                    <img src="img/background-Top-Logo.png" />
-                </div>
-            </div>
-            <div class="pag-content">
-                <img src="img/Videobutten.png" />
-            </div>
-            <div class="pag-content">
-                <img src="img/Content_Preferences_butten.png" />
-            </div>
-            <div class="pag-footer bckcvr">
-                <a id="start-btn" class="sbt" onclick="show_page('.pag-camera');" disabled="disabled">開始操作</a>
-            </div>
-            <div class="pag-funcs-content">
-                <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-                <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-camera">
-            <div class="photo-container">
-                <div class="msg">
-                    <div class="text-center" style="font-size: 40px;"><i class="fa fa-camera"></i></div>
-                    <span id="how-to-take-picture">請按照接下來的語音說明步驟進行拍照程序，謝謝您。</span>
-                    <div id="pag-camera-msg" class="text-center" style="font-size: 45px;"></div>
-                </div>
-            </div>
-            <div class="pag-footer bckcvr">
-                <a id="camera-btn1" onclick="start_get_pic();" class="sbt">立即拍攝</a>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-picture">
-            <div class="photo-container">
-                <div class="sho-points-container">
-                    <div class="sho-points"></div>
-                </div>
-                <canvas id="photo-canvas" width="320" height="360"></canvas>
-                <img id="face-img" src="" class="hidden" />
-            </div>
-            <div class="picture-actions">
-                <div class="swiper-container choose-makeup"><!--都會知性,氣質甜美,時尚名媛-->
-                    <!-- Additional required wrapper -->
-                    <div class="swiper-wrapper">
-                        <!-- Slides -->
-                        <div class="swiper-slide" cstyle="0">
-                            <h3>左右滑動選擇化妝樣式</h3>
-                        </div>
-                        <div class="swiper-slide makeup-style" cstyle="1">
-                            <h3>都會知性</h3>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a role="tab" aria-controls="eye1" data-toggle="tab">眼影</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="brush1" data-toggle="tab">腮紅</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="fund1" data-toggle="tab">粉底</a></li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane eye1 active">
-                                    <ul class="style-colors" step="eye">
-                                        <li cnum="1" class="p162"></li>
-                                        <li cnum="2" class="p163"></li>
-                                        <li cnum="3" class="p655"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane brush1">
-                                    <ul class="style-colors" step="brush">
-                                        <li cnum="4" class="p176"></li>
-                                        <li cnum="5" class="p1685"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane fund1">
-                                    <ul class="style-colors" step="fundation">
-                                        <li cnum="6" class="fundation1"></li>
-                                        <li cnum="7" class="fundation2"></li>
-                                        <li cnum="8" class="fundation3"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="text-center style-simulate-btns">
-                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
-                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
-                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide makeup-style" cstyle="2">
-                            <h3>氣質甜美</h3>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a role="tab" aria-controls="eye2" data-toggle="tab">眼影</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="brush2" data-toggle="tab">腮紅</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="fund2" data-toggle="tab">粉底</a></li> 
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane eye2 active">
-                                    <ul class="style-colors" step="eye">
-                                        <li cnum="1" class="p182"></li>
-                                        <li cnum="2" class="p244"></li>
-                                        <li cnum="3" class="p7525"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane brush2">
-                                    <ul class="style-colors" step="brush">
-                                        <li cnum="4" class="p494"></li>
-                                        <li cnum="5" class="p170"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane fund2">
-                                    <ul class="style-colors" step="fundation">
-                                        <li cnum="6" class="fundation1"></li>
-                                        <li cnum="7" class="fundation2"></li>
-                                        <li cnum="8" class="fundation3"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="text-center style-simulate-btns">
-                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
-                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
-                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide makeup-style" cstyle="3">
-                            <h3>時尚名媛</h3>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li role="presentation" class="active"><a role="tab" aria-controls="eye3" data-toggle="tab">眼影</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="brush3" data-toggle="tab">腮紅</a></li>
-                                <li role="presentation"><a role="tab" aria-controls="fund3" data-toggle="tab">粉底</a></li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane eye3 active">
-                                    <ul class="style-colors" step="eye">
-                                        <li cnum="1" class="p538"></li>
-                                        <li cnum="2" class="p535"></li>
-                                        <li cnum="3" class="p424"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane brush3">
-                                    <ul class="style-colors" step="brush">
-                                        <li cnum="4" class="p1767"></li>
-                                        <li cnum="5" class="p177"></li>
-                                    </ul>
-                                </div>
-                                <div role="tabpanel" class="tab-pane fund3">
-                                    <ul class="style-colors" step="fundation">
-                                        <li cnum="6" class="fundation1"></li>
-                                        <li cnum="7" class="fundation2"></li>
-                                        <li cnum="8" class="fundation3"></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="text-center style-simulate-btns">
-                                <a class="sbt inline" onclick="save_style();">儲存設計</a>
-                                <a class="sbt inline" onclick="share_style();">分享妝容</a>
-                                <a class="sbt inline" onclick="show_page('.pag-chk-inks');">開始化妝</a>
-                            </div>
-                        </div>
-                    </div>                    
-                    <!-- If we need navigation buttons -->
-                    <div class="swiper-button-prev swiper-button-white"></div>
-                    <div class="swiper-button-next swiper-button-white"></div>
-                </div>
-                <div class="color-plate">
-                    <div class="color-choose-btn fundation fundation1"></div>
-                    <div class="color-choose-btn fundation fundation2"></div>
-                    <div class="color-choose-btn fundation fundation3"></div>
-                    <div class="color-choose-btn brush "></div>
-                    <div class="color-choose-btn brush "></div>
-                </div>
-                <div id="style-share" class="style-option">
-                    <div class="text-center" >
-                    <a onclick="share_social('1');"><img src="img/fb-button.png" /></a>
-                    <a onclick="share_social('2');"><img src="img/line-button.png" /></a>
-                    <a onclick="share_social('3');"><img src="img/wechat-button.png" /></a>
-                    </div>
-                    <div class="text-center" style="margin-top:15px;" >
-                        <a class="sbt" onclick="share_return()">返回</a>
-                    </div>
-                </div>
-                <div id="style-save" class="style-option">
-                    <h3>儲存設計</h3>
-                    <form name="style-save-form" id="style-save-form">
-                    <div class="form-group form-inline" >
-                        <input type="text" class="form-control" id="style_name" name="style_name" placeholder="請輸入您自定的樣式名稱" />
-                    </div>
-                    <div class="text-center" style="margin-top:15px;" >
-                        <a class="sbt inline" onclick="do_save_style()">儲存</a>
-                        <a class="sbt inline" onclick="save_return()">取消</a>
-                    </div>
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-chk-inks">
-            <div class="photo-container">
-                <div class="inks-message">請稍候，系統正在比對色匣號碼...</div>
-                <div class="inks">
-
-                </div>
-            </div>
-                <!--
-                <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>
-                <div class="row inks" style="padding-top:70px;">
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#f4dbaa;"></div>
-                        <div class="ink-txt text-center">粉底 #155</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#fadfaf;">
-                            <div class="err-color" style="background:#ffd691;">#1345</div>
-                        </div>
-                        <div class="ink-txt text-center">打亮 #155H</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#f2c68c;"></div>
-                        <div class="ink-txt text-center">修容 #156</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#f9bfc1;"></div>
-                        <div class="ink-txt text-center">眼影a #182</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#e29ed6;"></div>
-                        <div class="ink-txt text-center">眼影b #251</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#753802;"></div>
-                        <div class="ink-txt text-center">眼影c #725</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#f9afd3;"></div>
-                        <div class="ink-txt text-center">腮紅a #236</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <div class="ink-color" style="background:#f9baaa;"></div>
-                        <div class="ink-txt text-center">腮紅b #169</div>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                    </div>
-                </div>-->
-            
-            <div class="pag-footer bckcvr">
-                <a class="sbt inline" onclick="show_page('.pag-picture')">返回</a>
-                <a class="sbt inline" onclick="correct_ink()" id="btn-start-makeup" >重新整理</a>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-makeup">
-            <div class="pag-content" style="height:75%">
-                <div class="steps-msg" style="padding: 250px 0 0 0; text-align: center; color: #fff;">正在連結化妝機，請稍候。。。</div>
-            </div>
-            <div class="pag-footer bckcvr">
-                <div class="text-center">
-                <a class="emerg-btn" onclick="startProc('stop_make_up');"></a>
-                <a id="back-index" class="sbt" onclick="show_page('.pag-index')" style="display:none">返回</a>
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-socket-error">
-            <div class="pag-content">
-                <h2 class="pag-title">主機連線發生錯誤</h2>
-                <div class="pag-text">
-                    與化妝主機之連線發生問題，正在嘗試重新連線中。請您確定化妝機電源開啟，並顯示燈號為正常。<br />
-                    如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。
-                </div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                    <a class="btn btn-default"  data-toggle="modal" data-target="#config-modal">設定連線</a>
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-about">
-            <div class="pag-content">
-                <h2 class="pag-title">關於榮美化妝機</h2>
-                <div class="pag-text">
-                    榮美化妝機致力於提供您最優質的化妝體驗。請使用我們原廠的化妝材料才能保證您使用我們的化妝機可以達到最佳的化妝效果。
-                </div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                    
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-contact">
-            <div class="pag-content">
-                <h2 class="pag-title">聯絡客服</h2>
-                <div class="pag-text">
-                    若您需要採購或維護您的化妝機，請聯絡我們的客服專線：<br />
-                    (02)2922-3899
-                </div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                    
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-manual">
-            <div class="pag-content">
-                <h2 class="qa-title">使用說明</h2>
-                <div class="qa">
-                    <div class="qa-q">
-                    如何連結化妝機？
-                    </div>
-                    <div class="qa-a">
-                    <ol>
-                        <li>請先確定化妝機開機，並且開啟您的手機的藍芽連線。</li>
-                        <li>請開啟<a onclick="show_page('.pag-setup')">藍芽設定</a>的畫面，等待系統尋找周邊的藍芽裝置，待出現「glorymakeupBT」的裝置時，
-                        請點選並連結。</li>
-                        <li>完成連結後，請跳到「主機連結設定」的畫面，設定主機要連結的Wifi熱點名稱及密碼，</li>
-                        <li>設定完成後，請按下測試連結，待系統畫面完成連線測試，會自動跳到操作首頁，您就可以正常操作化妝機</li>
-                    </ol>
-                    </div>
-                </div>
-                <div class="qa">
-                    <div class="qa-q">
-                    如何更換化妝色匣？
-                    </div>
-                    <div class="qa-a">
-                    <ol>
-                        <li>請先確定化妝機開機，及與本App程式連線中。</li>
-                        <li>請開啟<a onclick="show_page('.pag-setup')">更換色匣</a>的畫面，並在畫面中選取您要更換的色匣編號。完成後，系統會通知化妝機將該色匣旋轉到待更換位置。</li>
-                        <li>請打開化妝機色匣更換窗口，若有舊色匣請抽出舊色匣，然後請將新色匣依照安裝手冊說明，安裝到空的色匣裝置中。</li>
-                        <li>安裝完成後，若您安裝下一個色匣，請直接在App中點選下一個色匣，或是直接關上換色匣窗口。換色匣窗口關上後，系統會自動重新取得目前的色匣色號，您可以在畫面中檢視到新的色匣對應色號。</li>
-                    </ol>
-                    </div>
-                </div>
-                <div class="qa">
-                    <div class="qa-q">
-                    化妝中斷後，如何重新進行？
-                    </div>
-                    <div class="qa-a">
-                    <ol>
-                        <li>您的化妝程序必需要在「準備」、「換色」、「清潔」等程序中才可以從中斷程序中恢復。若您的化妝程序是在「噴塗上色」時中斷，就無法直接恢復。</li>
-                        <li>請您直接在畫面中按下「繼續上妝」，等待系統語音提示您就位，系統會自動恢復上妝。</li>
-                        <li>若您的化妝程序無法中斷恢復，您手機的畫面會說明該程序無法再繼續恢復。請您清潔您的臉部後，再重新選擇妝容，重新化妝。</li>
-                    </ol>
-                    </div>
-                </div>
-                <div class="qa">
-                    <div class="qa-q">
-                    需要其他化妝色匣號碼，如何購買？
-                    </div>
-                    <div class="qa-a">
-                    <ol>
-                        <li>請上我們的官方網站購買。</li>
-                    </ol>
-                    </div>
-                </div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                    
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-msg">
-            <div class="pag-content">
-                <h2 id="pag-msg-title"></h2>
-                <div id="pag-msg-content"></div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                <a href="#" id="back-index" class="sbt" onclick="show_page('')" >返回畫面</a>
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div class="pag pag-sigtest">
-            <div class="pag-content">
-                <h2 class="qa-title">訊號測試</h2>
-                <div>
-                    <a onclick="send('Cam_Check')" class="sbt">相機狀態測試</a>
-                </div>
-                <div>
-                    <a onclick="send('Robot_Check')" class="sbt">機械狀態測試</a>
-                </div>
-                <div>
-                    <a onclick="send('Ink_Check')" class="sbt">色匣測試</a>
-                </div>
-                <div>
-                    <a onclick="send('Ink_Low_Check')" class="sbt">低墨測試</a>
-                </div>
-            </div>
-            <div class="pag-footer">
-                <div class="text-center"> 
-                    <a href="#" id="back-index" class="sbt" onclick="show_page('')" >返回畫面</a>
-                </div>
-            </div>
-            <div class="pag-funcs-content">
-            <a href="#" class="pag-funcs pull-left list-btn" onclick="show_list();" ></a>
-            <a href="#" class="pag-funcs pull-right" data-toggle="modal" data-target="#config-modal" ><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a>
-            <div class="clearfix"></div>
-            </div>
-        </div>
-        <div id="alert-modal" class="modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                    <h4 class="modal-title" id="alert-title"></h4>
-                  </div>
-                  <div class="modal-body">
-                    <div id="alert-content"></div>
-                  </div>
-                  <div class="modal-footer">
-                        <a class="btn btn-primary" id="btn-close-alert"  data-dismiss="modal" >確定</a>
-                  </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <div id="config-modal" class="modal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                    <h4 class="modal-title" id="config-title">Wifi連線設定</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="form-group form-inline">
-                        <label for="host">Host</label>
-                        <input class="form-control" type="text" name="host" id="host" />
-                    </div>
-                    <div class="form-group form-inline">
-                        <label for="port">Port</label>
-                        <input class="form-control" type="text" name="port" id="port" />
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                        <a class="btn btn-default" onclick="reconnect();">重試</a>
-                  </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <div id="slidemenu">
-            <ul class="nav navbar-nav">
-                <li><div class="slidemenu-li-title">設定</div></li>
-                <li><a onclick="show_page('.pag-setup')">藍芽設定</a></li>
-                <li><a onclick="show_page('.pag-config')">個人資料</a></li>
-                <li><div class="slidemenu-li-title">功能切換</div></li>
-                <li><a onclick="show_page('.pag-index')">首頁</a></li>
-                <li><a onclick="show_page('.pag-camera');">拍照</a></li>
-                <li><a onclick="show_page('.pag-picture');">選擇樣式</a></li>
-                <li><a onclick="show_page('.pag-sigtest')">訊號測試</a></li>
-                <li><div class="slidemenu-li-title">說明文件</div></li>
-                <li><a onclick="show_page('.pag-manual')">使用說明</a></li>
-                <li><a onclick="show_page('.pag-about')">關於榮美</a></li>
-                <li><a onclick="show_page('.pag-contact')">客服聯絡</a></li>
-                <!--<li><a id="togglePoints">Show</a></li>
-                <li><a id="debug">Debug</a></li>
-                <li><a onclick="msgpage_show('發生錯誤','與化妝主機之連線發生問題，正在嘗試重新連線中。如果一直無法重新連線，請關閉化妝機電源再開啟一次。若仍然持續無法連線，請洽客服人員處理。');">中斷連線</a></li>-->
+            </div>    
+         </main>
+         <footer>
+            <a onclick="reconnect();" class="pink_btn">CONNECT<i class="fa fa-angle-right"></i></a>
+            <a onclick="prev_page()" class="gray_btn">CANCEL<i class="fa fa-angle-right"></i></a>
+         </footer>
+    </div>
+    <div class="gray_bg pag pag-style-all">
+        <header>
+            <div class="style_page_tilte">全部儲存的樣式</div>
+        </header>
+        <main class="style_all_block style-list">
+            <ul>
+                <!--<li><i class="fa fa-circle"></i>MAKEUP STYLE 1</li>-->
             </ul>
+        </main>
+        <footer class="style_all_footer">
+            <a href="" class="link_title left_side"><i class="fa fa-file-text-o"></i>SAVE AS...</a>
+            <div class="vertical_line"></div>
+            <a href="" class="link_title right_side"><i class="fa fa-share-alt"></i>SHARE</a>     
+        </footer>
+    </div>
+    <div class="gray_bg pag pag-style-new">
+        <header>
+            <div class="app_nav"><i class="fa fa-angle-left"></i><span>GLORY</span><i class="fa fa-bars"></i></div>
+            <div class="style_page_tilte">儲存為新的樣式</div>
+        </header>
+        <main class="style_new_block">
+            <form action="" method="post" id="stlye_new_form">
+                <input type="text" name="stylename" placeholder="輸入名稱" />
+                <a href="" onclick="document.getElementById('stlye_new_form').submit();" class="pink_btn">CONFIRM<i class="fa fa-angle-right"></i></a>
+            </form>
+            <a href="" class="link_title">取消儲存</a>
+        </main>
+    </div>
+    <div class="pink_bg pag pag-about">
+        <main class="use_about_block">
+            <ul class="use_about_list">
+                <li><i class="fa fa-chevron-left"></i>會員資料</li>
+                <li>姓名<a onclick="user_settings_item('姓名','請輸入姓名')"><i class="fa fa-wrench"></i></a></li>
+                <li>雲洛群</li>
+                <li>電子郵件<a onclick="user_settings_item('電子郵件','請輸入Email')"><i class="fa fa-wrench"></i></a></li>
+                <li>poney@gmail.com</li>
+                <li class="setting_phone" >手機號碼<a onclick="user_settings_item('手機號碼','請輸入手機號碼')"><i class="fa fa-wrench"></i></a></li>
+                <li>+886 922315678</li>
+                <li>住家地址<a onclick="user_settings_item('住家地址','請輸入地址')"><i class="fa fa-wrench"></i></a></li>
+                <li>新北市新店區中正路102巷7號1樓</li>
+                <li>生日<a onclick="user_settings_item('生日','請輸入生日')"><i class="fa fa-wrench"></i></a></li>
+                <li>1977/12/29</li>
+            </ul>
+        </main>     
+    </div>
+    <div class="pink_bg pag pag-contact"></div>
+    <div class="gray_bg pag pag-manual">
+        <main class="use_direction_block">
+            <ul class="use_direction_list">
+                <li><a onclick="show_page('.pag-picture')"><i class="fa fa-chevron-left"></i>使用說明</a></li>
+                <li>步驟1</li>
+                <li>啟動化妝機，確定運作燈已亮起。</li>
+                <li>步驟2</li>
+                <li>手機連線化妝機，進入APP程式。</li>
+                <li>步驟3</li>
+                <li>上傳手機原有照片或拍一張照片，選擇您要的妝感風格，調整您的粉底、腮紅與眼影顏色，點選修改可調整您上妝的區塊。</li>
+                <li>步驟4</li>
+                <li>妝容設定完成後，您可以儲存該妝容。點選 BRUSH 按鈕，則開始使用化妝機為您上妝，請注意語音提示配合操作。</li>
+                <li>步驟5</li>
+                <li>開始上妝。</li>
+            </ul>
+        </main>
+    </div>
+    <div class="gray_bg pag pag-msg">
+        <main class="photo_error_block">
+            <i class="fa fa-exclamation-triangle fa-5x error_link_icon"></i>
+            <p class="link_title" id="pag-msg-title">系統訊息</p>
+            <div class="link_content" id="pag-msg-content"></div>
+            <a onclick="prev_page();"  class="pink_btn">BACK<i class="fa fa-angle-right"></i></a>
+            <a onclick="show_page('.pag-manual');" class="pink_btn">HELP<i class="fa fa-angle-right"></i></a>
+         </main>
+    </div>
+    <div class="gray_bg pag pag-bluetooth-scan">
+        <main class="bluetooth_set_block">
+            <i class="fa fa-bluetooth fa-5x"></i>
+            <div class="bluetooth_scanning">
+                <p id="bt-msg">藍芽裝置掃描中</p>
+                <a href="#"  class="pink_btn" onclick="bt_turn_on();">TURN ON<i class="fa fa-angle-right"></i></a>
+                <ul class="bluetooth_devices"> 
+                    <li>Glory Makeup<i class="fa fa-check-circle-o"></i></li>
+                    <li>藍芽裝置B</li>
+                    <li>藍芽裝置D</li>
+                    <li>藍芽裝置E</li>
+                </ul>
+            </div>     
+            <div class="bluetooth_connected">
+                <p>藍芽已連線到...</p>
+                <ul class="bluetooth_devices"> 
+                    <li>Glory Makeup</li>
+                </ul>
+            </div>   
+         </main>
+         <footer>
+            <a onclick="prev_page();" class="pink_btn cancel_btn">CANCEL<i class="fa fa-angle-right"></i></a>
+         </footer>
+    </div>
+    <div class="gray_bg pag pag-makeup-complete">
+        <main class="makeup_complete_block">
+        <h1>化妝完成</h1>
+        <p>正在執行清潔動作...</p>
+        <h5>您已可以離開此畫面</h5>
+        <a onclick="show_page('.pag-index');" class="pink_btn">BACK HOME<i class="fa fa-angle-right"></i></a>
+        </main>
+    </div>
+    <div class="pag pag-sigtest">
+        <main>
+        <i class="fa fa-cog fa-4x"></i>
+        <h2 class="qa-title">訊號測試</h2>
+        <!--<div><a onclick="sig_test('Cam_Check')" class="pink_btn sbt">相機狀態測試<i class="fa fa-angle-right"></i></a></div>
+        <div><a onclick="sig_test('Robot_Check')" class="pink_btn sbt">機械狀態測試<i class="fa fa-angle-right"></i></a></div>
+        <div><a onclick="sig_test('Ink_Check')" class="pink_btn sbt">色匣測試<i class="fa fa-angle-right"></i></a></div>
+        <div><a onclick="sig_test('Ink_Low_Check')" class="pink_btn sbt">低墨測試<i class="fa fa-angle-right"></i></a></div>-->
+        <div><a onclick="show_page('.pag-init-check')" class="pink_btn sbt">開機程序測試<i class="fa fa-angle-right"></i></a></div>
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">相機狀態</p>
+            <a onclick="send('cam_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('cam_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
         </div>
-        <div class="inverse" id="navbar-height-col"></div>
-        <div class="hidden">
-            <img id="photo-origin" />
-            <img id="photo-whiten" />
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">機械狀態</p>
+            <a onclick="send('robot_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('robot_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
         </div>
-        <audio id="audio" src="voice/001.m4a" type="audio/mp4"></audio>
-        <!--<script type="text/javascript" src="cordova.js"></script>-->
-        <script type="text/javascript">
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">使用者位移</p>
+            <a onclick="send('move_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('move_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
+        </div>
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">使用者中斷</p>
+            <a onclick="send('stop_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('stop_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
+        </div>
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">色閘異常</p>
+            <a onclick="send('ink_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('ink_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
+        </div>
+        <div class="pag-sigtest-item">
+            <p class="pag-sigtest-title">低墨量檢查</p>
+            <a onclick="send('ink_low_error', 'rbt');" class="pink_btn pag-sigtest-errorBtn"><i class="fa fa-times"></i>異常</a>            
+            <a onclick="send('ink_low_ok', 'rbt');" class="pink_btn pag-sigtest-okBtn"><i class="fa fa-circle-o"></i>正常</a>
+            <div class="clear"></div>
+        </div>                                               
+        </main>
+    </div>
+      <div class="pag pag-init-check">
+        <main>
+            <ul class="init-check-steps">
+                <li class="init-check-on"><i class="fa fa-check-circle-o"></i>連線測試</li><!--init-check-on-->
+                <li><i class="fa fa-check-circle-o"></i>相機狀態測試</li>
+                <li><i class="fa fa-check-circle-o"></i>機械狀態測試</li>
+                <li><i class="fa fa-check-circle-o"></i>使用者位移測試</li>
+                <li><i class="fa fa-check-circle-o"></i>使用者中斷測試</li>
+                <li><i class="fa fa-check-circle-o"></i>色閘異常測試</li>
+                <li><i class="fa fa-check-circle-o"></i>低墨量檢測</li>
+            </ul>
+            <div><a onclick="" class="pink_btn">完成<i class="fa fa-angle-right"></i></a></div>
+        </main>
+    </div>  
+    <div class="pag pag-settings">
+        <main>
+		<!-- settings -->
+		<ul class="settings_list">
+			<li onclick="show_page('.pag-config');">帳號設置</li>
+			<li onclick="show_page('.pag-socket-setup');">連線設定</li>
+			<li onclick="show_page('.pag-chk-inks');">色閘更換</li>
+			<li onclick="show_page('.pag-makeup')">上妝程序</li>
+			<li onclick="show_page('.pag-makeup-complete')">化妝完成</li>
+			<li onclick="show_page('.pag-about');">基本資訊</li>
+			<li onclick="show_page('.pag-notice');">訊息通知</li>
+			<li onclick="show_page('.pag-manual');">服務資訊</li>
+			<li onclick="show_page('.pag-contact');">意見反饋</li>
+			<li onclick="show_page('.pag-sigtest');">測試訊號</li>
+			<li onclick="show_points();">顯示特徵點</li>
+			<li onclick="logout();">登出</li>
+		</ul>
+        </main>
+    </div>      
+    <div id="alert-modal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" onclick="hide_modal()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <h4 class="modal-title" id="alert-title"></h4>
+              </div>
+              <div class="modal-body">
+                <div id="alert-content"></div>
+              </div>
+              <div class="modal-footer">
+                    <a class="btn btn-primary" id="btn-close-alert" onclick="hide_modal();">確定</a>
+              </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- header -->
+    <header>
+        <div class="app_nav"><i id="nav-btn-back" class="fa fa-angle-left"></i><span>GLORY</span><!--<i class="fa fa-bars"></i>--></div>
+    </header>
+    <!-- user_settings -->
+    <div class="user_settings_list">
+        <main>
+            <div class="user_setting_title"><i class="fa fa-chevron-left"></i><span></span></div>
+            <form action="" method="post" id="user_settings_form">
+                <input type="text" name="stylename" placeholder="" />
+                <a onclick="show_page('.pag-about')" class="pink_btn">SAVE<i class="fa fa-angle-right"></i></a>
+            </form>
+        </main>
+    </div>
+    <div class="overlap pink_bg">
+        <div class="overlap-content">
+            <div class="overlap-spin"><i class="fa fa-circle-o-notch fa-spin"></i></div>
+            <div class="overlap-msg">正在嘗試連線到主機...</div>
+        </div>
+    </div>
+    <!-- quick_makeup_list -->
+    <div class="quick_makeup_list">
+        <div class="quick_makeup_search" ><input type="text" name="search" placeholder="全部儲存的樣式" /><i class="fa fa-search"></i></div>
+        <ul class="style-list">
+            <!--<li><i class="fa fa-circle"></i>MAKEUP STYLE 1</li>-->
+        </ul>
+    </div>
+    <audio id="audio" src="voice/001.m4a" type="audio/mp4"></audio>
+    <script type="text/javascript">
+            var index_swiper, makeup_style_swiper, makeup_editor_swiper;
+            var conn_count=0;
             var mdb = {"glory":{loginid:'glory', passwd:'glory'}};
+            var conn_info = {};
+            var app_mode = 'control';
             var minfo = {loginid:'glory', passwd:'glory'};
             //var host = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
             var host = "glory.cloud-us.com";
+            var serverhost = "http://glory.cloud-us.com";
             var data = "-- data to be sent --";
             var port = 3000;
             var key = "";
             var proc = "";
             var stat = "";
             var pic_load="N";
-            var pic_file="face.bmp";
+            var pic_url="";
+            var photo_canvas; //用來裝載#img-face的canvas的getContext('2d')
+            var ctrack; //clm用的元件
             var cur_page="";
             var cur_show_page = "";
+            var previous_page = "";
+            var personal_styles = [];
             var makeup_style=1;
             var socket;
             var mask_w = 230;
             var mask_h = 320;
             var screen_w = 320;
+            var screen_h = 640;
             var center_x = 160;
-            var center_y = 180;
-            var screen_w = 360;
+            var center_y = 160;
             var locations = {};
             var socket_connected = false;
             var socket_retry = 0;
             var skip_connected = false;
-            var mySwiper;
-            var def_face = "face_smooth.png";
             var msg1="系統正在讀取您前次的拍攝記錄，請稍候。";
             var msg2="請將您的頭臉按照說明書指示，就正確的位置後，系統會自動進行拍照";
             var msg3="系統無法讀取您前次拍攝記錄，請重新拍攝。";
             var swiper_html = "";
-            var action_bottom = 0;
+            var rep_action;
             var glory_url = "http://glory.cloud-us.com";
             var ts;
+            var colors = {"103":"#c59271", "104":"#c59971", "105":"#c5a071", "106":"#c5a771", "107":"#c5ae71", "201":"#c6927e", "202":"#e59bdc", "312":"#ff9d7b", "316":"#ff9d6e", "322":"#bf9474", "330":"#1e1a34", "315":"#c5cfda", "327":"#0067a0", "328":"#1d252d", "401":"#fabbcb", "402":"#ffa38b" };
             $(function(){
                 $('#host').val(host);
                 $('#port').val(port);
                 screen_w = $(window).width();
+                screen_h = $(window).height();
                 center_x = parseInt(screen_w/2);
                 show_page('.pag-init');
             });
             function show_page(target_page){
+                previous_page = cur_page;
                 if(!target_page) target_page = cur_page;
                 if(target_page != '.pag-msg') cur_page = target_page;
                 toggle_slide_menu(true);
                 $('.pag').hide();
-                $('.modal').modal('hide'); 
+                $('.modal').hide(); 
                 $(target_page).show();
                 cur_show_page = target_page;
+                if($(target_page).hasClass('no-header')){
+                    $('header').animate({'top':'-36px'});
+                }else{
+                    $('header').animate({'top':'0px'});
+                }
+                // if($('.settings_list').hasClass('in')) $('#nav-btn-list').trigger('click');
                 init_page(target_page);
             }
-            
+            function prev_page(){
+                if(!previous_page) previous_page = '.pag-index';
+                show_page(previous_page);
+            }
             function init_page(target_page){
+                $('.app_nav').show();
                 if(target_page == '.pag-init'){
                     var to_page = '.pag-login';
                     if(Cookies.get('mdb')){
-                        mdb = Cookies.get('mdb');
+                        mdb = Cookies.getJSON('mdb');
                     }
                     if(Cookies.get('minfo')){
-                        minfo = Cookies.get('minfo');
+                        minfo = Cookies.getJSON('minfo');
                         to_page = '.pag-index';
+                        load_saved_styles();
                     }else if(minfo){
                         //to_page = '.pag-index';
                     }
-                    try{
-                        socket = io.connect('http://'+ host + ':' + port ,{'connect timeout': 3000} );
-                        socket.on('connect', function() {
-                            socket_connected = true;
-                            socket.on('cmd', function (data) {
-                                console.log('rec from socket io : '+data);
-                                handelProc(data);
-                            });
-                            socket.on('msg', function (data) {
-                                console.log('msg from socket io : '+data);
-                                msgpage_show('系統訊息', data);
-                            });
-                            socket.on('disconnect', function(){
-                                socket_connected = false;
-                                proc_socket_error();
-                            });
-                        });
-                        socket.on('connect_failed', function() {
-                            socket_connected = false;
-                            proc_socket_error();
-                        });
-                        socket.on('error', function() {
-                            socket_connected = false;
-                            proc_socket_error();
-                        });
-                        socket.io.on('connect_error', function(err) {
-                            socket_connected = false;
-                            proc_socket_error();
-                        });
-                        var iSwiper = new Swiper ('.init-slider', {
-                          loop: false
-                        });
-                        $('.init-slider .swiper-slide').click(function(){
-                            show_page(to_page);
-                        });
-                        //setTimeout(function(){ show_page(to_page) }, 500);
-                    }catch(e){
-                        msgbox_show('連線錯誤', '系統發生未預期的錯誤，請嘗試更新您的設定。', function(){
-                            show_page('.pag-setup');
-                        });
-                        console.log(e);
+                    if(Cookies.get('conn_info')){
+                        conn_info = Cookies.getJSON('conn_info');
+                        host = conn_info.host;
+                        port = conn_info.port;
+                        console.log('host=' + host + ', port = ' + port);
+                    }else{
+                        proc_socket_error();
                         return false;
                     }
-                }else if(target_page == '.pag-login' || target_page == '.pag-index'){
+                    $('#Welcome_page').click(function(){
+                        show_page(to_page);
+                    });
+                }else if(target_page == '.pag-login' || target_page == '.pag-register'){
+                    $('.app_nav').hide();
+                }else if(target_page == '.pag-index'){
                     $('#camera-btn1').show();
-                    if(!socket_connected && !skip_connected){
-                        msgbox_show('連線錯誤', '系統無法正確連線到您的化妝機，請確認您的藍芽連線狀態。', [{text:'略過', click:function(){ skip_connected = true; show_page('.pag-index'); }
-                        }]);
-                        return false;
-                    }
-                }else if(target_page == '.pag-setup'){
-                    $('#set_name').val(minfo.name);
-                    $('#set_email').val(minfo.email);
-                    $('#set_loginid').val(minfo.loginid);
-                    $('#set_passwd').val(minfo.passwd);
+                    if(!index_swiper) index_swiper = new Swiper('#index_sliders', {
+                        pagination: '.swiper-pagination',
+                        paginationClickable: true,
+                        loop: true
+                    });
+                    connect();
+                }else if(target_page == '.pag-socket-setup'){
+                    app_mode = 'fun';
                 }else if(target_page == '.pag-config'){
                     $('#cfg_name').val(minfo.name);
                     $('#cfg_email').val(minfo.email);
@@ -1284,96 +854,190 @@
                     $('#cfg_passwd').val(minfo.passwd);    
                 }else if(target_page == '.pag-camera'){
                     startProc('prepare_face');
-                }else if(target_page == '.pag-picture'){
-                    def_face = 'http://' + host +':' + port+'/'+pic_file+'?r='+get_random_str();
+                }else if(target_page == '.pag-picture'){ 
+                    //重新計算big_face_circle的margin-top
+                    var margin_top = (screen_h - 511) /2;
+                    $('.big_face_circle').css({'margin-top':margin_top});
+                    $('.big_circle_bg').css({'margin-top':margin_top-26});
+                    //取得上次拍照內容
+                    load_picture();
                     center_x = 160;
-                    center_y = 180;
-                    $('#face-img').load(function() {
-                        face_loaded();
-                    }).attr('src', def_face);
-                    if(!mySwiper){
-                        mySwiper = new Swiper ('.choose-makeup', {
-                          loop: true,
-                          onSlideChangeEnd: changeMakeup
+                    center_y = 160;
+                    if(!makeup_style_swiper){
+                        makeup_style_swiper = new Swiper ('.makeup_styles', {
+                            slidesPerView: 3
                         });
                     }
-                }else if(target_page == '.pag-chk-inks'){
-                    if(ts) clearTimeout(ts);
-                    $('.inks').html('');
-                    $('.pag-picture .swiper-slide-active .tab-content li').each(function(){
-                        var cnum = $(this).attr('cnum');
-                        var pclass = $(this).attr('class');
-                        var color_btn = '<div class="color-choose-btn '+pclass+' cnum'+cnum+'" ></div>';
-                        $('.inks').append(color_btn);
+                    //將編輯區域的色塊著色
+                    $.each(colors, function(k,v){
+                        $('.c'+k).css({'background-color':v});
                     });
-                    var s = 0;
-                    ts = setTimeout(check_ink(0), 1000);
-                    /*
-                    if($('.err-color:visible').length > 0){ //color-choose-btn
-                        msgbox_show('色匣不符合','您所設置的色匣不符合本妝感的色匣配置，請您參考畫面上的提示更換正確的色匣後，按「重新整理」再試一次。');
-                    }*/
+                }else if(target_page == '.pag-chk-inks'){
+                    if(app_mode == 'control'){
+                        check_ink();
+                    }else{
+                        msgbox_show('離線模式','APP目前設定為離線模式，在本模式下您無法操作化妝機進行化妝。是否現在設定連線？',[
+                            {text:"設定連線",click:function(){show_page('.pag-socket-setup')}},
+                            {text:"取消",click:function(){hide_modal();}}
+                            ]);
+                    }
                 }else if(target_page == '.pag-makeup'){
                     startProc('select_style');
+                }else if(target_page == '.pag-init-check'){
+                    //init-check-on
+                    rep_action = function(data){
+                        if(data.substring(0,4) == 'fake'){
+                            var fake_step = parseInt(data.substring(4,5));
+                            $('.init-check-steps li').eq(fake_step).addClass('init-check-on');
+                        }
+                    };
+                    send('init_check');
                 }
             }
+            function confirm_offline_mode(){
+
+            }
             function proc_socket_error(){
-                if(socket_retry > 10){
-                    socket.close();
+                $('.overlap').hide();
+                if(app_mode == 'fun'){
+                    if(socket) socket.close();
+                    return;
+                }
+                if(socket_retry > 5){
+                    if(socket) socket.close();
+                    app_mode = 'fun';
+                    confirm_offline_mode();
                     return;
                 }
                 socket_retry++;
-                if(cur_show_page != '.pag-socket-error') show_page('.pag-socket-error');
+                if($(cur_page).hasClass('ignore-socket-err')) return;
+                if(conn_info.host){
+                    show_page('.pag-socket-error');
+                }else{
+                    show_page('.pag-chk-connect');
+                }
             }
-            function reconnect(){
-                socket.close();
-                socket_retry=0;
-                host = $('#host').val();
-                port = $('#port').val();
-                msgbox_show('連線成功', '應用程式已成功連接化妝機，您現在可以操作化妝功能！');
-                socket = io.connect('http://'+ host + ':' + port ,{'connect timeout': 3000} );
-                socket.on('connect', function() {
-                    socket_connected = true;
-                    if(cur_show_page == '.pag-socket-error') show_page('.pag-index');
-                    socket.on('cmd', function (data) {
-                        console.log('rec from socket io : '+data);
-                        handelProc(data);
+
+            function connect(afterconn){
+                if(socket_connected) return;
+                if(socket){
+                    socket.io.disconnect();
+                    socket.close();
+                }
+                try{
+                    var conn_url = 'http://'+ host + ':' + port;
+                    console.log('try to conn '+ conn_url);
+                    socket = io.connect(conn_url );
+                    setTimeout(function(){
+                        if(!socket_connected){
+                            proc_socket_error();
+                        }
+                    },3000);
+                    
+                    socket.on('connect', function() {
+                        $('.overlap').hide();
+                        console.log('connected to ' + conn_url);
+                        socket_connected = true;
+                        socket.on('cmd', function (data) {
+                            data = data.toString().trim();
+                            console.log('rec from socket io : '+data);
+                            handelProc(data);
+                        });
+                        socket.on('msg', function (data) {
+                            console.log('msg from socket io : '+data);
+                            msgpage_show('系統訊息', data);
+                        });
+                        socket.on('rep', function (data) {
+                            console.log('rep from socket io : '+data);
+                            if(rep_action){
+                                rep_action(data);
+                            }else{
+                                msgbox_show('系統訊息', data);
+                            }
+                        });
+                        socket.on('disconnect', function(){
+                            socket_connected = false;
+                            proc_socket_error();
+                        });
+                        app_mode = 'control';
+                        if(afterconn) afterconn();
                     });
-                    socket.on('msg', function (data) {
-                        console.log('msg from socket io : '+data);
-                        msgpage_show('發生錯誤', data);
-                    });
-                    socket.on('disconnect', function(){
+                    socket.on('connect_timeout',function(){
                         socket_connected = false;
                         proc_socket_error();
                     });
-                });
+                    socket.on('connect_failed', function() {
+                        socket_connected = false;
+                        proc_socket_error();
+                    });
+                    socket.on('error', function() {
+                        socket_connected = false;
+                        proc_socket_error();
+                    });
+                    socket.io.on('connect_error', function(err) {
+                        socket_connected = false;
+                        proc_socket_error();
+                    });
+                    //setTimeout(function(){ show_page(to_page) }, 500);
+                }catch(e){
+                    msgbox_show('連線錯誤', '系統發生未預期的錯誤，請嘗試更新您的設定。', [{
+                        text:"確定", click:function(){
+                        show_page('.pag-setup');
+                    } }]);
+                    console.log('socket error=' + e);
+                    return false;
+                }
             }
-            function face_loaded(){
-                if(!locations["p1"]) get_landmark_locations();
-                $('#photo-canvas').clearCanvas().drawImage({
-                  source: def_face,
-                  x: center_x, y: center_y,
-                  scale: 1
-                });
+            function reconnect(){
+                socket_retry=0;
+                host = $('#host').val();
+                port = $('#port').val();
+                conn_info.host = host;
+                conn_info.port = port;
+                Cookies.set('conn_info', conn_info, { expires: 365 });
+                app_mode = 'control';
+                var afterconn =function(){
+                    msgbox_show('連線成功', 'APP已成功連接化妝機，您現在可以操作化妝功能！', 
+                    [{text:'返回首頁', click: function(){ show_page('.pag-index');}}]);
+                };
+                $('.pag-socket-setup').removeClass('ignore-socket-err');
+                $('.overlap-msg').html('正在嘗試連線到主機...');
+                $('.overlap').show();
+                connect(afterconn);
             }
-            function draw_face(snum){
+            function draw_face(snum,new_colorsn_a,new_colorsn_b,new_colorsn_c){
                 //var cur_host = 'http://' + host + '/images/simulate/';
                 makeup_style = snum;
                 var cur_host = 'img/';
+                var colorsn_a = $('.eyeshadow_editors #area_circle_A').attr('colorsn');
+                var colorsn_b = $('.eyeshadow_editors #area_circle_B').attr('colorsn');
+                var colorsn_c = $('.eyeshadow_editors #area_circle_C').attr('colorsn');
+                if(new_colorsn_a){
+                	colorsn_a = new_colorsn_a;
+                }else if(new_colorsn_b){
+                	colorsn_b = new_colorsn_b;
+                }else if(new_colorsn_c){
+                	colorsn_c = new_colorsn_c;
+                }
                 brush_left = cur_host+ 'brush_left'+snum+'.png?r='+get_random_str();
                 brush_right = cur_host+ 'brush_right'+snum+'.png?r='+get_random_str();
-                eye_left = cur_host+ 'eye_left'+snum+'.png?r='+get_random_str();
-                eye_right = cur_host+ 'eye_right'+snum+'.png?r='+get_random_str();
+                //原本的單圖眼影
+                // eye_left = cur_host+ 'eye_left'+snum+'.png?r='+get_random_str();
+                // eye_right = cur_host+ 'eye_right'+snum+'.png?r='+get_random_str();
+                //分成三區的左眼影
+                eye_left_a = cur_host+ 'eye_left_a_'+colorsn_a+'.png?r='+get_random_str();
+                eye_left_b = cur_host+ 'eye_left_b_'+colorsn_b+'.png?r='+get_random_str();
+                eye_left_c = cur_host+ 'eye_left_c_'+colorsn_c+'.png?r='+get_random_str();
+                //分成三區的右眼影
+                eye_right_a = cur_host+ 'eye_right_a_'+colorsn_a+'.png?r='+get_random_str();
+                eye_right_b = cur_host+ 'eye_right_b_'+colorsn_b+'.png?r='+get_random_str();
+                eye_right_c = cur_host+ 'eye_right_c_'+colorsn_c+'.png?r='+get_random_str();                            
                 //var loc = get_draw_locs();
                 var brush_loc = cal_brush_loc();
                 var eye_loc = cal_eye_loc();
                 //console.log(brush_loc);
-                //console.log(eye_loc);
-                $('#photo-canvas').clearCanvas().drawImage({
-                      source: def_face,
-                      x: center_x, y: center_y,
-                      scale: 1
-                }).drawImage({
+                $('#makeup_canvas').clearCanvas()
+                .drawImage({
                     source: brush_left,
                     x: brush_loc.blx, y: brush_loc.bly,
                     scale: brush_loc.blr,
@@ -1383,7 +1047,8 @@
                     fromCenter: true,
                     groups: ['makeups'],
                     name: 'brushleft'
-                }).drawImage({
+                })
+                .drawImage({
                     source: brush_right,
                     x: brush_loc.brx, y: brush_loc.bry,
                     scale: brush_loc.brr,
@@ -1393,58 +1058,69 @@
                     fromCenter: true,
                     groups: ['makeups'],
                     name: 'brushright'
-                }).drawImage({
-                    source: eye_left,
+                })
+                //左眼影分三區上妝
+                .drawImage({
+                    source: eye_left_a,
                     x: eye_loc.elx, y: eye_loc.ely,
                     scale: 0.6,
                     opacity: 0.7,
                     layer: true,
                     fromCenter: true,
                     groups: ['makeups'],
-                    name: 'eyeleft'
-                }).drawImage({
-                    source: eye_right,
+                    name: 'eyeleft_a'
+                })
+                .drawImage({
+                    source: eye_left_b,
+                    x: eye_loc.elx, y: eye_loc.ely,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeleft_b'
+                })
+                .drawImage({
+                    source: eye_left_c,
+                    x: eye_loc.elx, y: eye_loc.ely,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeleft_c'
+                })
+                //右眼影分三區上妝
+                .drawImage({
+                    source: eye_right_a,
                     x: eye_loc.erx, y: eye_loc.ery,
                     scale: 0.6,
                     opacity: 0.7,
                     layer: true,
                     fromCenter: true,
                     groups: ['makeups'],
-                    name: 'eyeright'
-                });
-            }
-            function share_return(){
-                $('#style-share').animate({'top':'100%'}, function(){ $('#style-share').hide(); });
-            }
-            function save_return(){
-                $('#style-save').animate({'top':'100%'}, function(){ $('#style-save').hide(); });
-            }
-            function share_style(){
-                 $('#style-share').show().animate({'top':'56px'});
-            }
-            function save_style(){
-                 $('#style-save').show().animate({'top':'0'});
-            }
-            function do_save_style(){
-                var new_style_name = $('#style_name').val();
-                var new_slide = mySwiper.slides[mySwiper.activeIndex];
-                var obj_slide = $(new_slide).clone().attr('id', new_style_name);
-                obj_slide.find('h3').html(new_style_name);
-                var obj_slide_html = obj_slide[0].outerHTML;
-                mySwiper.appendSlide(obj_slide_html);
-                mySwiper.update();
-                save_return();
-            }
-            function correct_ink(){
-                if($('.err-color').length > 0){
-                    $('.err-color').remove(); 
-                    $('#btn-start-makeup').html('開始化妝'); 
-                }else{
-                    show_page('.pag-makeup');
-                }
-            }
-            function share_social(){
-
+                    name: 'eyeright_a'
+                })
+                .drawImage({
+                    source: eye_right_b,
+                    x: eye_loc.erx, y: eye_loc.ery,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeright_b'
+                })
+                .drawImage({
+                    source: eye_right_c,
+                    x: eye_loc.erx, y: eye_loc.ery,
+                    scale: 0.6,
+                    opacity: 0.7,
+                    layer: true,
+                    fromCenter: true,
+                    groups: ['makeups'],
+                    name: 'eyeright_c'
+                });                                              
             }
             function handle_no_pic(){
                 if(pic_load == "N"){
@@ -1455,8 +1131,21 @@
                     $('.photo-msg-loader').css('opacity',0);
                 }
             }
-            function send(str) {
-                socket.emit('cmd', str);
+            function sig_test(str){
+                rep_action = function(data){
+                    msgpage_show('訊號測試結果', data)
+                }
+                send(str);
+            }
+            function send(str, typ) {
+                if(!typ) typ = 'cmd';
+                if(socket_connected){
+                    socket.emit(typ, str);
+                }else if(conn_info.host){
+                    show_page('.pag-socket-error');
+                }else{
+                    show_page('.pag-chk-connect');
+                }
             }
             function startProc(cmd){
                 $('#msg-code').html(cmd);
@@ -1478,6 +1167,10 @@
                     $('#back-index').show();
                 }else if(cmd == 'finish_process'){
                     $('#steps-msg').html('化妝程序完成。');
+                }else if(cmd == 'stop_camera'){
+                    document.getElementById('audio').pause();
+                    document.getElementById('audio').currentTime = 0;
+                    show_page('.pag-index');
                 }
                 if(socket_connected){
                     if(cmd == 'get_pic'){
@@ -1487,12 +1180,11 @@
                     }else if(cmd == 'select_style'){
                         proc = "wait for makeup";
                         send("select_type=" + makeup_style);
-                    }else if(cmd == 'stop_make_up'){
+                    }else if(cmd == 'stop_makeup'){
                         proc = "stop makeup";
                         send("stop_makeup");
-                        $('#steps-msg').html('緊急停止。');
-                        $('#emerg-btn').hide();
-                        $('#back-index').show();
+                        show_page('.pag-stop-makeup');
+                        document.getElementById('audio').pause();
                     }
                 }else{
                     if(cmd == 'get_pic'){
@@ -1503,10 +1195,9 @@
                         document.getElementById('audio').setAttribute("src", "voice/005.m4a");
                         document.getElementById('audio').play();
                         document.getElementById('audio').addEventListener("ended", end_make_up);
-                    }else if(cmd == 'stop_make_up'){
-                        $('#steps-msg').html('緊急停止。');
-                        $('#emerg-btn').hide();
-                        $('#back-index').show();
+                    }else if(cmd == 'stop_makeup'){
+                        show_page('.pag-stop-makeup');
+                        document.getElementById('audio').pause();
                     }
                 }
             }
@@ -1547,34 +1238,39 @@
                 };
                 f();
             }
-            
+            /* 當#photo_canvas的 canvas物件尚未init時，在此處init */
+            function load_picture(fid){
+                //
+                if(!pic_url) pic_url = 'http://' + host + ':'+ port + '/face.bmp?r='+get_random_str(); 
+                if(!socket_connected) pic_url = pic_url = 'http://' + host + '/face.bmp?r='+get_random_str();
+                //alert(pic_url);
+                if(!photo_canvas) photo_canvas = document.getElementById('photo_canvas').getContext('2d');
+                var img = new Image();
+                img.setAttribute('crossOrigin', '');
+                //img.crossOrigin = 'anonymous';
+                img.onload = function() {
+                    photo_canvas.drawImage(img,160, 0, 320, 320, 0, 0, 320, 320);
+                    //TODO:ctrack 開始運作後，應該要有一個 loading 的過程，待clmtrackrConverged完成時去掉～
+                    ctrack.start(document.getElementById('photo_canvas'));
+                };
+                img.src = pic_url;
+                $('#photo_img').attr('src', pic_url);
+            }
+            /*  */
             function handelProc(rcv){
-                if(rcv == 'get_pic_ok'){
+                if(rcv.substring(0, 10) == 'get_pic_ok'){
                     //讀取圖片
-                    var pic_origin = 'http://' + host + ':'+ port + '/face.bmp?r='+get_random_str();
-                    var pic_whiten = 'http://' + host + ':'+ port + '/face_whiten.jpg?r='+get_random_str();
-                    $('#pic_origin').attr('src', pic_origin);
-                    $('#pic_whiten').attr('src', pic_whiten);
+                    pic_url = 'http://' + host + ':'+ port + '/face.bmp?r='+get_random_str();                    
                     show_page('.pag-picture');
-                    get_landmark_locations();
                     document.getElementById('audio').setAttribute("src", "voice/004.m4a");
                     document.getElementById('audio').play();
                     return;
-                }else if(rcv == 'step1'){
-                    //切換到步驟1
-                    $('.sho-pic').hide();
-                    $('.steps').show();
-                    $('.steps-msg').html('步驟 1 &gt;&gt;&gt;');
-                }else if(rcv == 'step2'){
-                    $('.steps').show();
-                    $('.steps-msg').html('步驟 2 &gt;&gt;&gt;');
-                }else if(rcv == 'step3'){
-                    $('.steps').show();
-                    $('.steps-msg').html('步驟 3 &gt;&gt;&gt;');
-                }else if(rcv == 'makeup_complete'){
-                    $('.steps').show();
-                    $('.steps-msg').html('步驟完成');
-                    $('.steps-back').show();
+                }else if(rcv.substring(0, 4) == 'step'){
+                    if(cur_page != '.pag-makeup-step') show_page('.pag-makeup-step');
+                    var step = rcv.substring(4, 5);
+                    $('#cur_step').html(step);
+                }else if(rcv.substring(0, 15) == 'makeup_complete'){
+                    show_page('.pag-makeup-complete');
                 }
             }
             function backToStart(){
@@ -1585,49 +1281,8 @@
                 var s = Math.floor((Math.random() * 10000) + 1);
                 return s.toString();
             }
-            function get_landmark_locations(){
-                var s = '';
-                var fpath = 'http://' + host + ':'+ port + '/2d_landmarks.txt?r='+get_random_str();
-                $.support.cors = true;
-                $.get(fpath, function(res){
-                    try{
-                        var lines = res.split("\n");
-                        var numLines = lines.length;
-                        var i;
-                        var n = 0;
-                        // parse phrases
-                        for (i = 2; i < numLines; i++) {
-                          var line = lines[i];
-                          if (line.length <= 0) {
-                            continue;
-                          } else {
-                            //拆解這行變成X,Y兩個值
-                            var points = line.split(" ");
-                            var px = parseInt(points[0]);
-                            var py = parseInt(points[1]);
-                            var point =  {'x':px, 'y':py};
-                            console.log('p' + n + ':' + px+','+py);
-                            point= fix_locations(point);
-                            n++;
-                            locations['p' + n] =point;
-                          }
-                        }
-                        try{
-                            draw_landmarks();
-                        }catch(e){
-                            alert('error test draw!!');
-                            console.log(e);
-                        }
-                    }catch(e){
-                        alert('error happend!! res=' + res);
-                        console.log(e);
-                    }
-                }).fail(function() {
-                    alert('can not get 2d landmark files...'); 
-                });
-            }
-            function draw_landmarks(){
-                var targetarray = ['p54','p31','p60', 'p70', 'p33','p64', 'p11','p15', 'p13','p17','p72', 'p19','p23', 'p21','p25', 'p75'];
+            function draw_landmarks(pos){
+                var targetarray = ['p0','p4','p35', 'p14', 'p39','p10', 'p21','p23', 'p24','p25','p17', 'p28','p29', 'p30'];
                 var cls, ctxt;
                 $.each(locations, function(k, v){
                     cls = '';
@@ -1644,27 +1299,66 @@
                 var pobj = $(p);
                 pobj.appendTo('.sho-points').css({'position':'absolute', 'top':v.y+'px', 'left':v.x+'px'});
             }
+            function choose_style(sn){
+                var sel = '.makeup_style_' + sn;
+                $(sel).parent().find('.makeup_style_options.on').removeClass('on');
+                $(sel).parent().find('.fa-check').hide();
+                $(sel).children('.fa-check').show();
+                $(sel).parent().find('.makeup_style_options').css("opacity", "1");
+                $(sel).css("opacity", "0.5").addClass('on');
+                $(sel).parents('.makeup_style_lists').find('.makeup_style_funcs').addClass('is_selected');
+                //讀出該選項的JSON
+                var target_url = serverhost + "/do.php?cmd=get_style_info";
+                /*
+                get_data(target_url, {sn: sn}, function(res){
+                    var content = res.data.content;
+                    apply_style(content);
+                });
+                */
+                $.get( "style_info.txt", function( ret ) {
+                    var data = $.parseJSON(ret);
+                    if(data['style_' + sn]){
+                        var content = data['style_' + sn].content;
+                        apply_style(content);
+                        draw_face(sn);
+                    }
+                });
+            }
+            function apply_style(content){
+                //先處理 foundation color
+                var colorsn = content.foundation.color;
+                $('.fundation_style_list .footer_list[colorsn="'+colorsn+'"]').trigger('click');
+                //其次：腮紅,眼影的style
+                $('.blush_style_list .footer_list[sn="'+content.blush.style+'"]').trigger('click');
+                $('.eye_style_list .footer_list[sn="'+content.eyeshadow.style+'"]').trigger('click');
+                //其次：腮紅,眼影的design的color
+                if(content.blush.area_A) $('.blush_editors #area_circle_A').css({'background-color':colors[content.blush.area_A.color]}).attr('colorsn',content.blush.area_A.color);
+                if(content.blush.area_B) $('.blush_editors #area_circle_B').css({'background-color':colors[content.blush.area_B.color]}).attr('colorsn',content.blush.area_B.color);
+                if(content.eyeshadow.area_A) $('.eyeshadow_editors #area_circle_A').css({'background-color':colors[content.eyeshadow.area_A.color]}).attr('colorsn',content.eyeshadow.area_A.color);
+                if(content.eyeshadow.area_B) $('.eyeshadow_editors #area_circle_B').css({'background-color':colors[content.eyeshadow.area_B.color]}).attr('colorsn',content.eyeshadow.area_B.color);
+                if(content.eyeshadow.area_C) $('.eyeshadow_editors #area_circle_C').css({'background-color':colors[content.eyeshadow.area_C.color]}).attr('colorsn',content.eyeshadow.area_C.color);
+            }
             //腮紅位置計算
             function cal_brush_loc(){
-                var pla = locations['p54'];//右耳上
-                var plb = locations['p31'];//右鼻翼外側
-                var plc = locations['p60'];//右下頰
-                var pra = locations['p70'];//左耳上
-                var prb = locations['p33'];//左鼻翼外側
-                var prc = locations['p64'];//左下頰
+                var pla = locations['p0'];//右耳上
+                var plb = locations['p35'];//右鼻翼外側
+                var plc = locations['p4'];//右下頰
+                var pra = locations['p14'];//左耳上
+                var prb = locations['p39'];//左鼻翼外側
+                var prc = locations['p10'];//左下頰
                 var loc = {};
                 loc.bld = (plb.x - pla.x) ;
-                var blxo = loc.bld / 6; //左側的腮紅中心位移計算
+                var blxo = loc.bld / 8; //左側的腮紅中心位移計算
                 loc.blx = (pla.x + plb.x) / 2 - blxo; 
-                loc.bly = (pla.y + plb.y) / 2 + 12;
+                loc.bly = (pla.y + plb.y) / 2 + 15;
                 loc.blr = loc.bld / 80; // 左側的腮紅縮放計算
                 loc.bln = (plc.x - pla.x) / ( plb.x - pla.x) * 15; //左側腮紅旋轉角度計算(負值就逆旋轉)
                 draw_point('bl', {x:loc.blx, y:loc.bly}, 'bigp', 'BL');
 
                 loc.brd = (pra.x - prb.x) ;
-                var brxo = loc.bld / 5.5; //左側的腮紅圓心位移計算
-                loc.brx = (pra.x + prb.x) / 2;
-                loc.bry = (pra.y + prb.y) / 2 + 12;
+                var brxo = loc.bld / 8; //左側的腮紅圓心位移計算
+                loc.brx = (pra.x + prb.x) / 2 + brxo;
+                loc.bry = (pra.y + prb.y) / 2 + 15;
                 loc.brr = loc.brd / 80; // 右側的腮紅縮放計算
                 loc.brn = (prc.x - pra.x) / ( prb.x - pra.x) * -15; //右側腮紅旋轉角度計算(正值就逆旋轉)
                 draw_point('br', {x:loc.brx, y:loc.bry}, 'bigp', 'BR');
@@ -1672,15 +1366,15 @@
             }
             //眼影位置計算
             function cal_eye_loc(){
-                var ple4 = locations['p71'];//右眉下中
-                var ple5 = locations['p15'];//右眼外側
-                var ple6 = locations['p11'];//右眼內側
-                var ple7 = locations['p13'];//右眼上中
+                var ple4 = locations['p21'];//右眉下中
+                var ple5 = locations['p23'];//右眼外側
+                var ple6 = locations['p25'];//右眼內側
+                var ple7 = locations['p24'];//右眼上中
 
-                var pre4 = locations['p75'];//左眉下中
-                var pre5 = locations['p19'];//左眼內側
-                var pre6 = locations['p23'];//左眼外側
-                var pre7 = locations['p21'];//左眼上中
+                var pre4 = locations['p17'];//左眉下中
+                var pre5 = locations['p30'];//左眼內側
+                var pre6 = locations['p28'];//左眼外側
+                var pre7 = locations['p29'];//左眼上中
                 var loc = {};
                 loc.elxd = ple6.x - ple5.x; //右眼區寬度
                 loc.elyd = ple7.y - ple4.y; //右眼區高度
@@ -1691,13 +1385,6 @@
                 loc.erx = pre7.x + loc.erxd / 5;
                 loc.ery = (pre7.y + pre4.y) / 2 + loc.eryd / 3;
                 return loc;
-            }
-
-            function fix_locations(p){
-                var new_p = {};
-                new_p.x = p.x -160;
-                new_p.y = p.y;
-                return new_p;
             }
             function get_text(furl, postdata, proc_handler){
                 $.ajax({
@@ -1713,14 +1400,30 @@
                 $('#btn-close-alert').show();
                 $('#alert-title').html(title);
                 $('#alert-content').html(content);
-                $('#alert-modal').modal('show');
+                show_modal('#alert-modal');
                 if(buttons && Array.isArray(buttons)){
                     $('#btn-close-alert').hide();
                     $.each(buttons, function(k,v){
                         var btn = '<a class="btn btn-primary btn-newadd" >'+v.text+'</a>';
                         $(btn).click(v.click).appendTo('.modal-footer');
                     });
+                }else if(buttons == 'START MAKEUP'){
+                    $('#btn-close-alert').html('START MAKEUP').attr("onclick","check_ink()");
+                    $('.modal-dialog').css({'top':'150px'});
+                    $('.modal-body').css({'overflow-y':'auto','height':'auto'});
+                }else if(buttons == 'RELOAD'){
+                    $('#btn-close-alert').html('RELOAD').attr("onclick","check_ink()").click(function(){
+                        $('#alert-modal').slideToggle();
+                    });
+                    $('.modal-dialog').css({'top':'50px'});
+                    $('.modal-body').css({'overflow-y':'scroll','height':'50vh'});
                 }
+            }
+            function show_modal(objid){
+                $(objid).removeClass('modal-open').removeClass('in').addClass('modal-open').addClass('in').show();
+            }
+            function hide_modal(){
+                $('.modal').hide();
             }
             function msgpage_show(title, data){
                 $('#pag-msg-title').html(title);
@@ -1731,6 +1434,51 @@
                 if(cmd.substring(0,10) == 'get_pic_ok'){
                     alert('start relaod picture');
                     show_page('.pag-camera');
+                }
+            }
+            function show_color_plate(){
+                
+            }
+            function change_color(cstyle, step, cnum, classname){
+                var newclass = classname.replace("color-choose-btn ", "");
+                $('.pag-picture .swiper-slide[cstyle="'+cstyle+'"]').find('li[cnum="'+cnum+'"]').removeClass().addClass(newclass);
+                $('.color-plate').hide();
+            }
+            function show_list() {
+                var selected = $('#slidemenu').hasClass('slide-active');
+                toggle_slide_menu(selected);
+            }
+            function choose_color(obj){
+
+                change_color(cstyle, step, cnum, classname);
+            }
+            function set_mode(mode){
+                if(mode == 'fun'){
+                     msgbox_show('離線模式', '您將切換到離線模式，在本模式下您無法操作化妝機進行化妝。是否確定？', 
+                    [
+                        {text:'確定', click: function(){ app_mode = mode; show_page('.pag-index');}}, 
+                        {text:'取消',click:function(){ hide_modal();}}
+                    ]);
+                }else{
+                    app_mode = mode;
+                    show_page('.pag-index');
+                }
+            }
+            function show_forget(targetobj){
+
+                if(targetobj == 'loginid'){
+                    $('.forgot_username_block').slideToggle();
+                    $('.forgot_password_block').hide();
+                }else{
+                    $('.forgot_password_block').slideToggle();
+                    $('.forgot_username_block').hide();
+                }
+            }
+            function send_forget(targetobj){
+                if(targetobj == 'loginid'){
+                    $('.forgot_username_block').slideToggle();
+                }else{
+                    $('.forgot_password_block').slideToggle();
                 }
             }
             function login(){
@@ -1747,6 +1495,7 @@
                     }else{
                         minfo = mdb[loginid];
                         Cookies.set('minfo', minfo, { expires: 365 });
+                        load_saved_styles();
                         show_page('.pag-index');
                     }
                 }else{
@@ -1765,20 +1514,25 @@
             function register(){
                 var loginid = $('#reg_loginid').val();
                 var passwd = $('#reg_passwd').val();
-                var name = $('#reg_name').val();
-                var email = $('#reg_email').val();
-                if(!loginid || !passwd || !name || !email){
-                     msgbox_show('缺少必填的資料', '請在輸入完整資料後，再按下「送出」按鈕，謝謝！');
-                     return false;
+                var passwd_chk = $('#reg_passwd_chk').val();
+                if(!loginid || !passwd ){
+                    msgbox_show('缺少必填的資料', '請在輸入完整資料後，再按下「送出」按鈕，謝謝！');
+                    return false;
+                }else if(passwd != passwd_chk){
+                    msgbox_show('密碼不符', '您輸入的密碼和確認密碼不相符合！');
+                    return false;
                 }
                 if(mdb[loginid]){
                     msgbox_show('註冊失敗', '您要使用的帳號已經存在，請更換帳號後再試一次。');
                     return false;
                 }
-                var new_minfo = {loginid:loginid, passwd:passwd, name:name, email:email};
-                mdb[loginid] = new_minfo;
-                Cookies.set('minfo', new_minfo, { expires: 365 });
-                show_page('.pag-index');
+                minfo = {loginid:loginid, passwd:passwd};
+                mdb[loginid] = minfo;
+                Cookies.set('minfo', minfo, { expires: 365 });
+                msgbox_show('註冊成功', '感謝您註冊，請填寫下列基本資料以便未來提供您更多的服務。', [{'text':'確定',click:function(){
+                        $('.register_block').hide();
+                        $('.edit_member_block').show();
+                    }}]);
                 /*
                 get_data(glory_url + "/do.php?cmd=register", {loginid:loginid, passwd:passwd, name:name, email:email}, function(res){
                     if(res.minfo){
@@ -1786,11 +1540,37 @@
                         show_page('.pag-index');
                     } 
                 });*/
+            }
+            function edit_member(src){
+                var upd = {};
+                if(src == 'register'){
+                    upd.name = $('#reg_name').val();
+                    upd.email = $('#reg_email').val();
+                    upd.mobile = $('#reg_mobile').val();
+                }else{
+                    upd.loginid = $('#cfg_loginid').val();
+                    upd.passwd = $('#cfg_passwd').val();
+                    upd.name = $('#cfg_name').val();
+                    upd.email = $('#cfg_email').val();
+                    upd.mobile = $('#cfg_mobile').val();
+                }
+                $.each(upd, function(k,v){
+                    if(v.length > 0){
+                        minfo[k] = v;
+                    }
+                });
+                Cookies.set('minfo', minfo, { expires: 365 });
                 
+                if(src== "register"){
+                    //更新mdb
+                    mdb[upd.loginid] = {loginid:upd.loginid, passwd:upd.passwd};
+                    show_page('.pag-index');
+                }
             }
             function logout(){
                 minfo = {};
                 Cookies.remove('minfo');
+                Cookies.remove('conn_info');
                 show_page('.pag-login');
             }
             function toggle_slide_menu(selected){
@@ -1807,67 +1587,276 @@
                 $('#slidemenu').toggleClass('slide-active');
                 $('.pag:visible, .navbar, body, .navbar-header').toggleClass('slide-active');
             }
-            function setup(){
-                show_page('.pag-index');
+            function get_style_settings(){
+                var foundation_color = $('.fundation_style_list .footer_list.on').attr('colorsn');
+                var blush_color_A = $('.blush_editors #area_circle_A').attr('colorsn');
+                var blush_color_B = $('.blush_editors #area_circle_B').attr('colorsn');
+                var eye_color_A = $('.eyeshadow_editors #area_circle_A').attr('colorsn');
+                var eye_color_B = $('.eyeshadow_editors #area_circle_B').attr('colorsn');
+                var eye_color_C = $('.eyeshadow_editors #area_circle_C').attr('colorsn');
+                var blush_style = $('.blush_style_list .footer_list.on').attr('sn');
+                var eye_style = $('.eye_style_list .footer_list.on').attr('sn');
+                var data = {"foundation": {"color": "103"},"blush": {"style": "2","area_A": {"color": "202","size": "1","pos": "0,0"},"area_B": {"color": "312","size": "1","pos": "0,0"}},"eyeshadow": {"style": "3","area_A": {"color": "315","size": "1","pos": "0,0"}, "area_B":{"color": "327","size": "1","pos": "0,0"}, "area_C":{"color": "328","size": "1","pos": "0,0"}}};
+                if(foundation_color ) data.foundation.color = foundation_color;
+                if(blush_color_A ) data.blush.area_A.color = blush_color_A;
+                if(blush_color_B ) data.blush.area_B.color = blush_color_B;
+                if(eye_color_A ) data.eyeshadow.area_A.color = eye_color_A;
+                if(eye_color_B ) data.eyeshadow.area_B.color = eye_color_B;
+                if(eye_color_C ) data.eyeshadow.area_C.color = eye_color_C;
+                if(blush_style) data.blush.style=blush_style;
+                if(eye_style) data.eyeshadow.style=eye_style;
+                return data;
             }
-            function show_color_plate(cstyle, step, cnum){
-                var fund_array = ['fundation1', 'fundation2', 'fundation3'];
-                var brush_array = ['p176','p1685','p494','p170','p1767','p177'];
-                var eye_array = ['p162','p163','p655','p182','p244','p7525','p538','p535','p424'];
-                var cur_array;
-                if(step == 'fundation'){
-                    cur_array = fund_array;
-                }else if(step == 'brush'){
-                    cur_array = brush_array;
-                }else{
-                    cur_array = eye_array;
+            function save_style(){
+                var styleName = $('#new_styleName').val();
+                if(styleName.length <= 0 ){
+                    msgbox_show('新增樣式錯誤','您尚未輸入化妝樣式名稱，請輸入後再按儲存按鈕，謝謝。');
+                    return;
                 }
-                $('.color-plate div').remove();
-                $('.color-plate').attr('cstyle', cstyle).attr('step', step).attr('cnum', cnum);
-                $.each(cur_array, function(k,v){
-                    var div = '<div class="color-choose-btn '+v+'" onclick="choose_color(this);"></div>';
-                    $('.color-plate').append(div);
+                var target_url = serverhost + "/do.php?cmd=save_personal_styles";
+                var new_content = get_style_settings();
+                var data = {styleName:styleName, content:new_content };
+                /*
+                get_data(target_url, {loginid:minfo[loginid], data:data}, function(res){
+                    personal_styles.push(new_content); 
+                    var html = '<li><i class="fa fa-circle"></i><span>'+styleName+'</span></li>' + "\n"; 
+                    $('.style-list').append(html);
+                    $('.styleName_save_btn').toggle();
+                    $('.styleName_continue_btn').toggle();
+                    $('.stylename').hide();
                 });
-                $('.color-plate').fadeIn();
+                */
+                personal_styles.push(data);
+                localStorage.setItem('personal_styles', JSON.stringify(personal_styles));
+                var html = '<li><i class="fa fa-circle"></i><span>'+styleName+'</span></li>' + "\n"; 
+                $('.style-list').append(html);
+                $('.styleName_save_btn').toggle();
+                $('.styleName_continue_btn').toggle();
+                $('.stylename').hide();
             }
-            function change_color(cstyle, step, cnum, classname){
-                var newclass = classname.replace("color-choose-btn ", "");
-                $('.pag-picture .swiper-slide[cstyle="'+cstyle+'"]').find('li[cnum="'+cnum+'"]').removeClass().addClass(newclass);
-                $('.color-plate').hide();
+            function save_continue(){
+                $('.styleName_save_btn').toggle();
+                $('.styleName_continue_btn').toggle();
+                $('.stylename').show();
             }
-            function changeMakeup(curswiper){
-                var slide = curswiper.slides[curswiper.activeIndex];
-                var cstyle = $(slide).attr('cstyle');
-                if(parseInt(cstyle) > 0){
-                    draw_face(cstyle);
-                }else{
-                    $('#photo-canvas').clearCanvas().drawImage({
-                        source: def_face,
-                        x: center_x, y: center_y,
-                        scale: 1
+            function load_saved_styles(){
+                /*
+                var target_url = serverhost + "/do.php?cmd=load_personal_styles";
+                get_data(target_url, {loginid:minfo[loginid]}, function(res){
+                    $('.style-list').html('');
+                    var html = '';
+                    $.each(res.data, function(k, v){
+                        html += '<li><i class="fa fa-circle"></i><span>'+v.styleName+'</span></li>' + "\n";
+                        personal_styles.push(v); 
                     });
-                }
+                    $('.style-list').html(html);
+                });
+                */
+                //if(localStorage.personal_styles) personal_styles = $.parseJSON(localStorage.personal_styles);
+                $('.style-list').html('');
+                var html = '';
+                $.each(personal_styles, function(k, v){
+                    html += '<li><i class="fa fa-circle"></i><span>'+v.styleName+'</span></li>' + "\n";
+                });
+                $('.style-list').html(html);
             }
-            function check_ink(s){
-                $('.inks .color-choose-btn').eq(s).html('<div class="ink-chk glyphicon glyphicon-ok"></div>');
-                s++;
-                if(s <= 7){
-                    ts = setTimeout(function(){check_ink(s)}, 1000);
-                }else{
+            function doShare(){
+                window.plugins.share.show(
+                    {
+                        subject: '我在Glory化妝機APP模擬上妝',
+                        text: '我在Glory化妝機APP模擬上妝，快到 http://glory.cloud-us.com/share.php?sid=1312 一起來看我的照片喔！'
+                    },
+                    function() {}, // Success function
+                    function() {alert('Share failed')} // Failure function
+                );
+            }
+            function check_ink(){
+                if($('#btn-close-alert').html() == 'START MAKEUP'){
                     show_page('.pag-makeup');
+                    return;
                 }
+                rep_action = function(data){
+                    $('.color_check_block').hide();
+                    $('.color_detection_block').show();
+                    rep_action = null;
+                    var inks = data.toString().split(",");
+                    $('.sm_circle').removeClass('alert');
+                    var nopass = false;
+                    var chk_color = [];                    
+                    //以下將每一個小圓檢查是否色閘正確，並上色標記墨量，寫上inksn(機器端的色閘編號)
+                    $.each(inks, function(n,v){
+                        var ink = v.split(":");
+                        var inksn = ink[0];
+                        var inkvol = 50-parseInt(ink[1]);
+                        var alertclass = "";
+                        var colorsn = "";
+                        switch(n){
+                            case 1:
+                                colorsn = $('.fundation_style_list .footer_list.on').attr('colorsn');
+                            break;
+                            case 4:
+                                colorsn = $('.blush_editors #area_circle_A').attr('colorsn');
+                            break;
+                            // case 5:
+                            //     colorsn = $('.blush_editors #area_circle_B').attr('colorsn');
+                            // break;
+                            case 6:
+                                colorsn = $('.eyeshadow_editors #area_circle_A').attr('colorsn');
+                            break;
+                            case 7:
+                                colorsn = $('.eyeshadow_editors #area_circle_B').attr('colorsn');
+                            break;
+                            case 8:
+                                colorsn = $('.eyeshadow_editors #area_circle_C').attr('colorsn');
+                            break;
+                            default:
+                                colorsn = inksn;
+                            break;
+                        }
+                        if(colorsn != inksn){
+                            alertclass = "alert";
+                            nopass = true;
+                            chk_color[n] = new Array();
+                            chk_color[n].push(inksn,colorsn);
+                        }
+                        $('.sm_circle_' + n).css({'background-color':colors[inksn]}).addClass(alertclass);
+                        $('.sm_circle_' + n + ' .ink_number').html(inksn);
+                        $('.sm_circle_' + n + ' .ink_status').css({'height':inkvol});
+                    });
+                    //以下判斷是否有色閘出錯
+                    if(nopass === false){
+                        msgbox_show('全部都已經是正確的色閘了','請點選START MAKEUP按鈕開始化妝','START MAKEUP');
+                    }else if(nopass === true){
+                        msgbox_show('請更換正確的色閘','化妝機目前安裝的色匣有部份不符合本次化妝所指定的顏色。請依照下列的指示更換色匣，完成後請按下畫面的RELOAD按鈕。<div id="chk_color_area"></div>','RELOAD');
+                        for (var i = 0 ; i < chk_color.length; i++) {
+                            if(chk_color[i] != undefined){
+                                // create text
+                                var chk_color_i = document.createTextNode(i);
+                                var chk_color_inksn = document.createTextNode(chk_color[i][0]);
+                                var chk_color_colorsn = document.createTextNode(chk_color[i][1]);
+
+                                // create an element for the text and append it
+                                var circle_i = document.createElement('h1');
+                                circle_i.appendChild(chk_color_i);
+
+
+                                var circle_inksn = document.createElement('h2');
+                                circle_inksn.appendChild(chk_color_inksn);
+
+                                var arrow = document.createElement('span');
+
+                                var circle_colorsn = document.createElement('h3');
+                                circle_colorsn.appendChild(chk_color_colorsn);
+
+                                // grab a reference to the div header
+                                var chk_color_area = document.getElementById('chk_color_area');
+
+                                // append the new element to the div
+                                chk_color_area.appendChild(circle_i);
+                                chk_color_area.appendChild(circle_inksn).style.backgroundColor = colors[chk_color[i][0]];
+                                chk_color_area.appendChild(arrow);
+                                chk_color_area.appendChild(circle_colorsn).style.backgroundColor = colors[chk_color[i][1]];
+                                $('#chk_color_area span').html('<i class="fa fa-long-arrow-right"></i>');
+                            }
+                        }
+                    }
+                };
+                $('.color_check_block').show();
+                $('.color_detection_block').hide();
+                send('Ink_Check');
             }
-            function show_list() {
-                var selected = $('#slidemenu').hasClass('slide-active');
-                toggle_slide_menu(selected);
+            function postolocation(pos){
+                var i = 0;
+                $.each(pos, function(k,v){
+                    locations['p'+i]= {x:v[0], y:v[1]};
+                    //var p = "<div id='p"+i+"' class='p'></div>";
+                    //$(p).appendTo('#container').css({'left':v[0], 'top':v[1]});
+                    i++;
+                });
             }
-            function choose_color(obj){
-                var cstyle = $('.color-plate').attr('cstyle');
-                var step = $('.color-plate').attr('step');
-                var cnum = $('.color-plate').attr('cnum');
-                var classname = $(obj).attr('class');
-                change_color(cstyle, step, cnum, classname);
+            function save_styleName(title){
+                $('#save_done_form .link_title').html(title);
+                show_page('.pag-save-done');
             }
+            function draw_foundation(fid){
+                doPix('photo_canvas', fid);
+            }
+            function doPix(canvasid, fid) {
+                var img = document.getElementById('photo_img'),
+                    canvas = document.getElementById(canvasid),
+                    ctx = canvas.getContext("2d"),
+                    P;
+                var efcts = {
+                    "103":{"brt":"0.0","ctr":"0","hue":"0.01","sat":"-0.01","lig":"0.01","lamt":"0"}, 
+                    "104":{"brt":"0.1","ctr":"0","hue":"0.01","sat":"-0.01","lig":"0.02","lamt":"0"},
+                    "105":{"brt":"0.2","ctr":"0","hue":"0.01","sat":"-0.01","lig":"0.03","lamt":"0"}, 
+                    "106":{"brt":"0.2","ctr":"0","hue":"0.01","sat":"-0.01","lig":"0.03","lamt":"0.05"},
+                    "107":{"brt":"0.2","ctr":"0","hue":"0.01","sat":"-0.01","lig":"0.03","lamt":"0.1"}
+                };
+                var cur_efct = efcts[fid];
+                var effects = [{
+                        effect : "brightness",
+                        options : {
+                                brightness : cur_efct.brt,
+                                contrast : cur_efct.ctr
+                            }
+                    },{
+                        effect : "hsl",
+                        options : {
+                            hue : cur_efct.hue,
+                            saturation : cur_efct.sat,
+                            lightness : cur_efct.lig
+                        }
+                    },{
+                    effect : "lighten",
+                        options : {
+                            amount : cur_efct.lamt
+                        }
+                    }];
+                canvas.width = 320;
+                canvas.height = 320;
+                ctx.drawImage(img,160, 0, 320, 320, 0, 0, 320, 320);
+                P = new Pixastic(ctx, 'js/');
+                $.each(effects, function(k,v){
+                    P[v.effect](v.options).done(function() {
+
+                    }, function(p) {
+                        //console.log(p);
+                    });
+                });
+            }
+            function show_points(){
+                $('.sho-points').show();
+            }
+            function downloadFile(){
+                var fail = function(error){
+                    console.log(error.code);
+                };
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+                    function onFileSystemSuccess(fileSystem) {
+                        fileSystem.root.getFile(
+                        "dummy.html", {create: true, exclusive: false}, 
+                        function gotFileEntry(fileEntry) {
+                            var sPath = fileEntry.fullPath.replace("dummy.html","");
+                            var fileTransfer = new FileTransfer();
+                            fileEntry.remove();
+
+                            fileTransfer.download(
+                                "http://www.w3.org/2011/web-apps-ws/papers/Nitobi.pdf",
+                                sPath + "theFile.pdf",
+                                function(theFile) {
+                                    console.log("download complete: " + theFile.toURI());
+                                    showLink(theFile.toURI());
+                                },
+                                function(error) {
+                                    console.log("download error source " + error.source);
+                                    console.log("download error target " + error.target);
+                                    console.log("upload error code: " + error.code);
+                                }
+                            );
+                        }, fail);
+                    }, fail);
+                };
         </script>
         <script>
         $(document).ready(function () {
@@ -1889,26 +1878,92 @@
             $('#debug').click(function(){
                 $('#msg-code').toggle();
             });
-            $("body").on("click touchend", '.pag-picture .swiper-slide .nav a', function (e) {
-                var target = $(this).attr('aria-controls');
-                $(this).parents('.swiper-slide').find('.tab-pane').hide();
-                $(this).parents('.swiper-slide').find('.' + target).show();
-            });
-            $("body").on("click touchend", '.style-colors li', function(){
-                var cstyle = $(this).parents('.swiper-slide').attr('cstyle');
-                var step = $(this).parents('.style-colors').attr('step');
-                var cnum = $(this).attr('cnum');
-                show_color_plate(cstyle, step, cnum);
-            });
-            $("body").on("click touchend", '.pag-picture .swiper-slide h3', function (e) {
-                if($('.picture-actions').hasClass('mvd')){
-                    $('.picture-actions').removeClass('mvd').animate({'bottom':action_bottom});
-                }else{
-                    $('.picture-actions').addClass('mvd').animate({'bottom':'0px'});
-                }
-            });
-            action_bottom = $('.picture-actions').css("bottom");
+            ctrack = new clm.tracker({stopOnConvergence : true});
+            ctrack.init(pModel);
+            // detect if tracker fails to find a face
+            document.addEventListener("clmtrackrNotFound", function(event) {
+                ctrack.stop();
+                alert("The tracking had problems with finding a face in this image. Try selecting the face in the image manually.")
+            }, false);
+
+            // detect if tracker loses tracking of face
+            document.addEventListener("clmtrackrLost", function(event) {
+                ctrack.stop();
+                alert("The tracking had problems converging on a face in this image. Try selecting the face in the image manually.")
+            }, false);
+
+            // detect if tracker has converged
+            document.addEventListener("clmtrackrConverged", function(event) {
+                var pos = ctrack.getCurrentPosition();
+                postolocation(pos);
+                draw_landmarks(pos);
+            }, false);
+
+            // update stats on iteration
+            document.addEventListener("clmtrackrIteration", function(event) {
+            }, false);
         });
         </script>
-    </body>
+</body>
 </html>
+<!--
+div class="detail_editor swiper-no-swiping">
+    <div class="face_side_button" style="display:none">
+        <a href="" class="left_btn select_btn">SELECT</a>
+        <a href="" class="right_btn select_btn">SELECT</a>
+    </div>
+    <div class="footer_title"><img src="images/blush_icon.png"><span>BLUSH DETAILS</span></div>
+    <div class="selected_color"></div>
+    <div class="footer_list style_selected">
+        <img src="images/blush_style1.png" />
+    </div>
+    <div class="details_setting_block">
+        <div class="color_circle">
+            <p>#001</p>
+            <div class="circle_1"></div>
+        </div>
+        <div class="color_circle">
+            <p>#002</p>
+            <div class="circle_2"></div>
+        </div>    
+        <div class="color_circle">
+            <p>#003</p>
+            <div class="circle_3"></div>
+        </div>    
+        <div class="color_circle">
+            <p>#004</p>
+            <div class="circle_4"></div>
+        </div>    
+        <div class="color_circle">
+            <p>#005</p>
+            <div class="circle_5"></div>
+        </div>    
+        <div class="color_circle">
+            <p>#006</p>
+            <div class="circle_6"></div>
+        </div>
+        <div class="clear"></div>
+        <div class="detail_slide_bar">
+            <div class="slide_bar_less"><i class="fa fa-minus-square-o"></i></div>
+            <div class="slide_bar_line"></div>
+            <div class="slide_bar_add"><i class="fa fa-plus-square-o"></i></div>
+            <div class="slide_bar_touch"><div class="slide_bar_square"></div></div>
+            <div class="clear"></div>
+            <a href="" class="move_btn"><i class="fa fa-arrows"></i> MOVE</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="makeup_style_funcs">
+        <a class="link_title left_side btn_detail_edit half"><i class="fa fa-times-circle-o"></i>BACK</a>
+        <a onclick="show_page('.pag-manual')" class="link_title right_side half"><i class="fa fa-question"></i>HELP</a>
+    </div>
+</div>
+
+<ul class="style_share_list">
+    <li><a class="btn_style_share"><i class="fa fa-angle-left"></i><span>回到樣式選擇</span></a></li> 
+    <li><a><i class="fa fa-instagram"></i>INSTAGRAM</a></li>
+    <li><a><i class="fa fa-facebook-square"></i>FACEBOOK</a></li>
+    <li><a><i class="fa fa-envelope"></i>EMAIL</a></li>
+    <li><a><i class="fa fa-twitter"></i>TWITTER</a></li>
+</ul>
+-->
